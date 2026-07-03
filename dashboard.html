@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Dashboard · EducationOS</title>
+  <meta name="description" content="Your degree at a glance — progress, savings, next best course and today's tasks."/>
+  <meta name="theme-color" content="#0b0d12"/>
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg"/>
+  <script>try{if(localStorage.getItem("eos.theme")==='"light"'||localStorage.getItem("eos.theme")==="light")document.documentElement.classList.remove("dark")}catch(e){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>window.tailwind = window.tailwind || {}; tailwind.config = { darkMode: "class", corePlugins: { preflight: false } };</script>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/components.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+</head>
+<body data-page="dashboard">
+  <a class="visually-hidden" href="#page-content">Skip to content</a>
+  <div class="app-shell">
+    <aside id="sidebar" class="sidebar" aria-label="Main navigation"></aside>
+    <div id="drawer-backdrop" class="drawer-backdrop" aria-hidden="true"></div>
+    <div class="main-wrap">
+      <header id="topbar" class="topbar"></header>
+      <main id="page-content" class="page page-enter">
+        <div class="page-header">
+          <div class="eyebrow">Overview</div>
+          <h1>Good to see you 👋</h1>
+          <p class="subtitle">Here's where the Elementary Education degree stands today.</p>
+        </div>
+        <div id="dashboard-content" aria-live="polite">
+          <div class="skeleton" style="height:220px;margin-bottom:16px"></div>
+          <div class="skeleton" style="height:120px"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <nav id="bottom-nav" class="bottom-nav"></nav>
+  <div id="search-overlay" class="search-overlay" aria-hidden="true"></div>
+  <div id="toast-root"></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

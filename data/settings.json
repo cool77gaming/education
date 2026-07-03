@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "note": "Default values used until the user changes them in Settings or the Calculator. All money values are USD and are ESTIMATES — verify current pricing with each provider."
+  },
+  "defaults": {
+    "sophiaMonthly": 99,
+    "studycomMonthly": 235,
+    "wguTermCost": 4085,
+    "wguResourceFeePerTerm": 150,
+    "booksAndSupplies": 300,
+    "licensureAndTestingFees": 500,
+    "traditionalFourYearCost": 45000,
+    "sophiaMonths": 4,
+    "studycomMonths": 2,
+    "wguTerms": 4,
+    "targetHoursPerWeek": 15,
+    "startDate": "2026-07-01"
+  },
+  "timeline": [
+    { "id": "tl-fafsa", "label": "FAFSA", "duration": "1–2 weeks", "description": "File the FAFSA with WGU's school code so financial aid is ready when you enroll.", "checklistId": "chk-fafsa" },
+    { "id": "tl-sophia", "label": "Sophia Courses", "duration": "3–5 months", "description": "Complete every verified transferable Sophia course while the subscription clock runs.", "checklistId": "chk-sophia" },
+    { "id": "tl-studycom", "label": "Study.com Courses", "duration": "1–2 months", "description": "Fill the gaps Sophia can't cover (geography, health) — verified equivalencies only.", "checklistId": "chk-studycom" },
+    { "id": "tl-transcripts", "label": "Transcript Evaluation", "duration": "2–4 weeks", "description": "Send Sophia + Study.com transcripts to WGU and confirm every course applied.", "checklistId": "chk-transcripts" },
+    { "id": "tl-enrollment", "label": "Enrollment", "duration": "2–4 weeks", "description": "Complete WGU intake, financial aid finalization and degree plan review with an enrollment counselor.", "checklistId": "chk-enrollment" },
+    { "id": "tl-orientation", "label": "Orientation", "duration": "1 week", "description": "WGU orientation course and first program mentor call.", "checklistId": "chk-orientation" },
+    { "id": "tl-term1", "label": "Term 1 (+ additional terms)", "duration": "6 months per term", "description": "Accelerate through remaining courses — 12 CUs minimum per term, unlimited at flat rate.", "checklistId": null },
+    { "id": "tl-clinical", "label": "Clinical Experience", "duration": "Paperwork 2–3 months ahead", "description": "Preclinical observation hours. Start background checks and placement paperwork EARLY.", "checklistId": "chk-clinical" },
+    { "id": "tl-student-teaching-1", "label": "Student Teaching I", "duration": "~8–10 weeks", "description": "First half of full-time supervised demonstration teaching, aligned to the host school calendar.", "checklistId": "chk-st1" },
+    { "id": "tl-student-teaching-2", "label": "Student Teaching II", "duration": "~8–10 weeks", "description": "Second half of demonstration teaching plus the Teacher Performance Assessment.", "checklistId": "chk-st2" },
+    { "id": "tl-graduation", "label": "Graduation", "duration": "2–4 weeks processing", "description": "Final transcript review and conferral.", "checklistId": "chk-graduation" },
+    { "id": "tl-licensure", "label": "Virginia Licensure", "duration": "1–3 months", "description": "WGU institutional recommendation + Virginia DOE application, required tests and background check.", "checklistId": "chk-license" }
+  ],
+  "checklist": [
+    { "id": "chk-fafsa", "label": "File FAFSA", "hint": "Add WGU's school code; renew each aid year." },
+    { "id": "chk-sophia", "label": "Sophia courses complete", "hint": "Every verified transferable course finished." },
+    { "id": "chk-studycom", "label": "Study.com courses complete", "hint": "Gap-filler courses finished (verified only)." },
+    { "id": "chk-transcripts", "label": "Send transcripts to WGU", "hint": "Sophia + Study.com official transcripts; confirm receipt." },
+    { "id": "chk-enrollment", "label": "Enrollment complete", "hint": "Degree plan reviewed — confirm every transfer credit applied before term start." },
+    { "id": "chk-orientation", "label": "Orientation finished", "hint": "Orientation course + first mentor call." },
+    { "id": "chk-clinical", "label": "Clinical experience cleared", "hint": "Background check, fingerprints, placement paperwork, observation hours." },
+    { "id": "chk-st1", "label": "Student Teaching I complete", "hint": "Aligned with host school calendar." },
+    { "id": "chk-st2", "label": "Student Teaching II complete", "hint": "Includes Teacher Performance Assessment." },
+    { "id": "chk-graduation", "label": "Graduation conferred", "hint": "Final review complete — order official transcripts." },
+    { "id": "chk-license", "label": "Virginia license issued", "hint": "Institutional recommendation + VDOE application + required tests." }
+  ]
+}

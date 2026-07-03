@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Sophia · EducationOS</title>
+  <meta name="description" content="Every Sophia course relevant to the WGU Elementary Education pathway — status, difficulty, hours and progress."/>
+  <meta name="theme-color" content="#0b0d12"/>
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg"/>
+  <script>try{if(localStorage.getItem("eos.theme")==='"light"'||localStorage.getItem("eos.theme")==="light")document.documentElement.classList.remove("dark")}catch(e){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>window.tailwind = window.tailwind || {}; tailwind.config = { darkMode: "class", corePlugins: { preflight: false } };</script>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/components.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+</head>
+<body data-page="sophia">
+  <a class="visually-hidden" href="#page-content">Skip to content</a>
+  <div class="app-shell">
+    <aside id="sidebar" class="sidebar" aria-label="Main navigation"></aside>
+    <div id="drawer-backdrop" class="drawer-backdrop" aria-hidden="true"></div>
+    <div class="main-wrap">
+      <header id="topbar" class="topbar"></header>
+      <main id="page-content" class="page page-enter">
+        <div class="page-header">
+          <div class="eyebrow">Phase 1 · Cheap credits first</div>
+          <h1>Sophia Learning</h1>
+          <p class="subtitle">Self-paced subscription courses. Finish everything verified on the pathway <em>before</em> enrolling at WGU — completing a course here updates your degree progress automatically.</p>
+        </div>
+
+        <div id="sophia-banner"></div>
+
+        <section class="card" style="margin-bottom:18px" aria-label="Sophia progress">
+          <div class="mp-head" style="display:flex;justify-content:space-between;font-size:.84rem;margin-bottom:8px">
+            <strong>Sophia progress</strong>
+            <span id="sophia-progress-label" style="color:var(--ink-3)">—</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Sophia completion">
+            <div class="progress-fill" id="sophia-progress-bar"></div>
+          </div>
+        </section>
+
+        <div class="toolbar">
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="search" class="input" id="sophia-list-search" placeholder="Search Sophia courses…" aria-label="Search Sophia courses"/>
+          </div>
+          <select class="select" id="sophia-list-sort" aria-label="Sort courses"></select>
+        </div>
+        <div class="chip-row" id="sophia-list-chips" style="margin-bottom:18px" role="group" aria-label="Filter courses"></div>
+
+        <div id="sophia-list" class="grid-cards" style="grid-template-columns:1fr"></div>
+      </main>
+    </div>
+  </div>
+  <nav id="bottom-nav" class="bottom-nav"></nav>
+  <div id="search-overlay" class="search-overlay" aria-hidden="true"></div>
+  <div id="toast-root"></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/filters.js"></script>
+  <script>
+    (function () {
+      window.EOS.pages = window.EOS.pages || {};
+      window.EOS.pages.sophia = {
+        init() {
+          const EOS = window.EOS;
+          document.getElementById("sophia-banner").innerHTML = EOS.verifyBanner("sophia",
+            EOS.data.sophia.meta.dataNote.replace("VERIFY BEFORE PURCHASING: ", ""));
+
+          EOS.courseList({
+            mount: "sophia-list",
+            courses: EOS.data.sophia.courses,
+            storeKey: "completed.sophia",
+            searchFields: ["name", "wguEquivalent", "notes", "tips"],
+            creditsOf: (c) => c.credits,
+            progressEl: { bar: "sophia-progress-bar", label: "sophia-progress-label" },
+            chips: [
+              { id: "all", label: "All" },
+              { id: "pathway", label: "Pathway-listed", match: (c) => c.status === "pathway" },
+              { id: "community", label: "Community-reported", match: (c) => c.status === "community" },
+              { id: "review", label: "Needs review", match: (c) => c.status === "review" },
+              { id: "unlikely", label: "Unlikely", match: (c) => c.status === "unlikely" },
+              { id: "todo", label: "To do", match: (c) => !EOS.store.isInList("completed.sophia", c.id) },
+              { id: "done", label: "Completed", match: (c) => EOS.store.isInList("completed.sophia", c.id) },
+            ],
+            sorts: [
+              { id: "recommended", label: "Sort: Recommended", fn: (a, b) => ({pathway:0,community:1,review:2,unlikely:3}[a.status] - {pathway:0,community:1,review:2,unlikely:3}[b.status]) || a.difficulty - b.difficulty },
+              { id: "name", label: "Sort: Name A–Z", fn: (a, b) => a.name.localeCompare(b.name) },
+              { id: "difficulty", label: "Sort: Easiest first", fn: (a, b) => a.difficulty - b.difficulty },
+              { id: "hours", label: "Sort: Fewest hours", fn: (a, b) => a.estHours - b.estHours },
+              { id: "credits", label: "Sort: Most credits", fn: (a, b) => b.credits - a.credits },
+            ],
+            renderHead: (c) => `
+              <div class="course-name"><span>${EOS.escape(c.name)}</span>${EOS.statusBadge(c.status)}</div>
+              <div class="course-sub">
+                <span>${c.credits} credits</span><span>→ ${EOS.escape(c.wguEquivalent)}</span>
+                ${EOS.difficultyDots(c.difficulty)}
+              </div>`,
+            renderBody: (c) => `
+              <div class="detail-grid">
+                <div class="detail-item"><div class="k">WGU equivalent</div><div class="v">${EOS.escape(c.wguEquivalent)}</div></div>
+                <div class="detail-item"><div class="k">Transfer status</div><div class="v">${EOS.escape(EOS.data.sophia.meta.statusLegend[c.status] || c.status)}</div></div>
+                <div class="detail-item"><div class="k">Est. hours</div><div class="v">~${c.estHours} hrs</div></div>
+                <div class="detail-item"><div class="k">Est. days</div><div class="v">~${c.estDays} days</div></div>
+              </div>
+              <p><strong style="color:var(--ink)">Official notes:</strong> ${EOS.escape(c.notes)}</p>
+              <p><strong style="color:var(--ink)">Tip:</strong> ${EOS.escape(c.tips)}</p>`,
+          });
+        },
+      };
+    })();
+  </script>
+</body>
+</html>

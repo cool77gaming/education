@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Reddit Advice · EducationOS</title>
+  <meta name="description" content="Searchable summaries of community-reported advice for the Sophia → WGU Elementary Education path."/>
+  <meta name="theme-color" content="#0b0d12"/>
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg"/>
+  <script>try{if(localStorage.getItem("eos.theme")==='"light"'||localStorage.getItem("eos.theme")==="light")document.documentElement.classList.remove("dark")}catch(e){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>window.tailwind = window.tailwind || {}; tailwind.config = { darkMode: "class", corePlugins: { preflight: false } };</script>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/components.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+</head>
+<body data-page="reddit">
+  <a class="visually-hidden" href="#page-content">Skip to content</a>
+  <div class="app-shell">
+    <aside id="sidebar" class="sidebar" aria-label="Main navigation"></aside>
+    <div id="drawer-backdrop" class="drawer-backdrop" aria-hidden="true"></div>
+    <div class="main-wrap">
+      <header id="topbar" class="topbar"></header>
+      <main id="page-content" class="page page-enter">
+        <div class="page-header">
+          <div class="eyebrow">Community knowledge</div>
+          <h1>Reddit Advice</h1>
+          <p class="subtitle">Distilled patterns from r/WGU and DegreeForum threads. These are community-reported experiences — not guarantees, and not official guidance.</p>
+        </div>
+        <div id="reddit-content"></div>
+      </main>
+    </div>
+  </div>
+  <nav id="bottom-nav" class="bottom-nav"></nav>
+  <div id="search-overlay" class="search-overlay" aria-hidden="true"></div>
+  <div id="toast-root"></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/search.js"></script>
+  <script>
+    (function () {
+      window.EOS.pages = window.EOS.pages || {};
+      window.EOS.pages.reddit = {
+        init() {
+          const EOS = window.EOS;
+          const mount = document.getElementById("reddit-content");
+          const all = EOS.data.reddit.advice;
+          const tags = [...new Set(all.flatMap((a) => a.tags))].sort();
+          let query = "", tag = "all";
+
+          const impactBadge = (im) => ({
+            high: '<span class="badge badge-danger">high impact</span>',
+            medium: '<span class="badge badge-warn">medium impact</span>',
+            low: '<span class="badge badge-neutral">good to know</span>',
+          }[im] || "");
+
+          function render() {
+            const q = query.trim().toLowerCase();
+            const list = all.filter((a) =>
+              (tag === "all" || a.tags.includes(tag)) &&
+              (!q || (a.title + " " + a.summary + " " + a.tags.join(" ")).toLowerCase().includes(q)));
+
+            document.getElementById("advice-grid").innerHTML = list.length
+              ? list.map((a) => `
+                <article class="card hoverable reveal revealed" id="${a.id}">
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+                    ${impactBadge(a.impact)}
+                    ${a.tags.map((t) => `<span class="badge badge-neutral">#${t}</span>`).join("")}
+                  </div>
+                  <h3 style="margin-bottom:8px">${EOS.escape(a.title)}</h3>
+                  <p style="color:var(--ink-2);font-size:.88rem">${EOS.escape(a.summary)}</p>
+                  <p style="color:var(--ink-3);font-size:.72rem;margin-top:12px">Community-reported experience — verify before acting.</p>
+                </article>`).join("")
+              : `<div class="empty-state card">${EOS.icons.search}<p>No advice matches.</p></div>`;
+          }
+
+          mount.innerHTML = `
+            ${EOS.verifyBanner("reddit", EOS.data.reddit.meta.disclaimer)}
+            <div class="toolbar">
+              <div class="input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+                <input type="search" class="input" id="advice-search" placeholder="Search advice…" aria-label="Search advice"/>
+              </div>
+            </div>
+            <div class="chip-row" id="advice-chips" style="margin-bottom:18px" role="group" aria-label="Filter by tag">
+              <button class="chip active" data-tag="all" aria-pressed="true">All</button>
+              ${tags.map((t) => `<button class="chip" data-tag="${t}" aria-pressed="false">#${t}</button>`).join("")}
+            </div>
+            <div id="advice-grid" class="grid-cards cols-2"></div>`;
+
+          document.getElementById("advice-search").addEventListener("input", (e) => { query = e.target.value; render(); });
+          document.getElementById("advice-chips").addEventListener("click", (e) => {
+            const btn = e.target.closest("[data-tag]");
+            if (!btn) return;
+            tag = btn.dataset.tag;
+            document.querySelectorAll("#advice-chips .chip").forEach((c) => {
+              const on = c.dataset.tag === tag;
+              c.classList.toggle("active", on); c.setAttribute("aria-pressed", on);
+            });
+            render();
+          });
+
+          render();
+
+          const openParam = new URLSearchParams(location.search).get("open");
+          if (openParam) {
+            const el = document.getElementById(openParam);
+            if (el) { el.scrollIntoView({ behavior: "smooth", block: "center" }); el.style.borderColor = "var(--accent-1)"; }
+          }
+        },
+      };
+    })();
+  </script>
+</body>
+</html>

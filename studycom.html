@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Study.com · EducationOS</title>
+  <meta name="description" content="Study.com gap-filler courses for the WGU Elementary Education pathway — what's worth taking, what to skip."/>
+  <meta name="theme-color" content="#0b0d12"/>
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg"/>
+  <script>try{if(localStorage.getItem("eos.theme")==='"light"'||localStorage.getItem("eos.theme")==="light")document.documentElement.classList.remove("dark")}catch(e){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>window.tailwind = window.tailwind || {}; tailwind.config = { darkMode: "class", corePlugins: { preflight: false } };</script>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/components.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+</head>
+<body data-page="studycom">
+  <a class="visually-hidden" href="#page-content">Skip to content</a>
+  <div class="app-shell">
+    <aside id="sidebar" class="sidebar" aria-label="Main navigation"></aside>
+    <div id="drawer-backdrop" class="drawer-backdrop" aria-hidden="true"></div>
+    <div class="main-wrap">
+      <header id="topbar" class="topbar"></header>
+      <main id="page-content" class="page page-enter">
+        <div class="page-header">
+          <div class="eyebrow">Phase 2 · Fill the gaps</div>
+          <h1>Study.com</h1>
+          <p class="subtitle">Use Study.com only for requirements Sophia can't cover. Watch the monthly proctored-exam limit, and verify every equivalency before paying.</p>
+        </div>
+
+        <div id="studycom-banner"></div>
+
+        <section class="card" style="margin-bottom:18px" aria-label="Study.com progress">
+          <div style="display:flex;justify-content:space-between;font-size:.84rem;margin-bottom:8px">
+            <strong>Study.com progress</strong>
+            <span id="study-progress-label" style="color:var(--ink-3)">—</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Study.com completion">
+            <div class="progress-fill" id="study-progress-bar"></div>
+          </div>
+        </section>
+
+        <div class="toolbar">
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="search" class="input" id="studycom-list-search" placeholder="Search Study.com courses…" aria-label="Search Study.com courses"/>
+          </div>
+          <select class="select" id="studycom-list-sort" aria-label="Sort courses"></select>
+        </div>
+        <div class="chip-row" id="studycom-list-chips" style="margin-bottom:18px" role="group" aria-label="Filter courses"></div>
+
+        <div id="studycom-list" class="grid-cards" style="grid-template-columns:1fr"></div>
+      </main>
+    </div>
+  </div>
+  <nav id="bottom-nav" class="bottom-nav"></nav>
+  <div id="search-overlay" class="search-overlay" aria-hidden="true"></div>
+  <div id="toast-root"></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/filters.js"></script>
+  <script>
+    (function () {
+      window.EOS.pages = window.EOS.pages || {};
+      window.EOS.pages.studycom = {
+        init() {
+          const EOS = window.EOS;
+          document.getElementById("studycom-banner").innerHTML = EOS.verifyBanner("studycom",
+            EOS.data.studycom.meta.dataNote.replace("VERIFY BEFORE PURCHASING: ", ""));
+
+          const recBadge = (r) => ({
+            worth: '<span class="badge badge-good">Worth taking</span>',
+            optional: '<span class="badge badge-info">Optional</span>',
+            skip: '<span class="badge badge-danger">Skip</span>',
+          }[r] || "");
+
+          EOS.courseList({
+            mount: "studycom-list",
+            courses: EOS.data.studycom.courses,
+            storeKey: "completed.studycom",
+            searchFields: ["name", "wguEquivalent", "notes", "tips"],
+            creditsOf: (c) => c.credits,
+            progressEl: { bar: "study-progress-bar", label: "study-progress-label" },
+            chips: [
+              { id: "all", label: "All" },
+              { id: "worth", label: "Worth taking", match: (c) => c.recommendation === "worth" },
+              { id: "optional", label: "Optional", match: (c) => c.recommendation === "optional" },
+              { id: "skip", label: "Skip", match: (c) => c.recommendation === "skip" },
+              { id: "done", label: "Completed", match: (c) => EOS.store.isInList("completed.studycom", c.id) },
+            ],
+            sorts: [
+              { id: "recommended", label: "Sort: Recommended", fn: (a, b) => ({worth:0,optional:1,skip:2}[a.recommendation] - {worth:0,optional:1,skip:2}[b.recommendation]) || a.difficulty - b.difficulty },
+              { id: "name", label: "Sort: Name A–Z", fn: (a, b) => a.name.localeCompare(b.name) },
+              { id: "difficulty", label: "Sort: Easiest first", fn: (a, b) => a.difficulty - b.difficulty },
+              { id: "hours", label: "Sort: Fewest hours", fn: (a, b) => a.estHours - b.estHours },
+            ],
+            renderHead: (c) => `
+              <div class="course-name"><span>${EOS.escape(c.name)}</span>${recBadge(c.recommendation)}${EOS.statusBadge(c.status)}</div>
+              <div class="course-sub">
+                <span>${c.credits} credits</span><span>→ ${EOS.escape(c.wguEquivalent)}</span>
+                ${EOS.difficultyDots(c.difficulty)}
+              </div>`,
+            renderBody: (c) => `
+              <div class="detail-grid">
+                <div class="detail-item"><div class="k">Transfer equivalent</div><div class="v">${EOS.escape(c.wguEquivalent)}</div></div>
+                <div class="detail-item"><div class="k">Est. hours</div><div class="v">~${c.estHours} hrs</div></div>
+                <div class="detail-item"><div class="k">Assignments</div><div class="v">${c.assignments}</div></div>
+                <div class="detail-item"><div class="k">Final exam</div><div class="v">${EOS.escape(c.finalExam)}</div></div>
+                <div class="detail-item"><div class="k">Est. cost</div><div class="v">~${EOS.fmtMoney(c.estCost)} (≈1 month)</div></div>
+              </div>
+              <p><strong style="color:var(--ink)">Notes:</strong> ${EOS.escape(c.notes)}</p>
+              <p><strong style="color:var(--ink)">Community tip:</strong> ${EOS.escape(c.tips)}</p>`,
+          });
+        },
+      };
+    })();
+  </script>
+</body>
+</html>

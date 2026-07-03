@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "disclaimer": "These cards summarize experiences commonly reported by students in communities like r/WGU, r/WGU_CompSci and DegreeForum. They are anecdotes, not guarantees, and not official WGU, Sophia or Study.com guidance. Policies change — always confirm with WGU Enrollment and your official Transfer Pathway Agreement."
+  },
+  "advice": [
+    {
+      "id": "adv-finish-before-enrolling",
+      "title": "Finish every transferable course BEFORE enrolling",
+      "tags": ["transfer", "sophia", "strategy"],
+      "summary": "Once you start at WGU, outside credits generally can no longer be applied to your degree plan. The community consensus is to complete 100% of your planned Sophia/Study.com courses, get transcripts sent, and only then enroll.",
+      "impact": "high"
+    },
+    {
+      "id": "adv-transcripts-early",
+      "title": "Order transcript evaluations early",
+      "tags": ["transfer", "enrollment", "paperwork"],
+      "summary": "Sophia and Study.com transcripts are free to send but evaluation takes time. Students report smoother starts when transcripts arrive at WGU several weeks before their intended start date.",
+      "impact": "high"
+    },
+    {
+      "id": "adv-clinical-paperwork",
+      "title": "Do not delay clinical placement paperwork",
+      "tags": ["clinical", "licensure", "paperwork"],
+      "summary": "Background checks, fingerprinting and school district placement approvals are the single most reported source of delays for education majors. Students recommend starting placement paperwork the moment WGU allows it — months before you think you need to.",
+      "impact": "high"
+    },
+    {
+      "id": "adv-student-teaching-calendar",
+      "title": "Align student teaching with the school calendar",
+      "tags": ["student-teaching", "planning"],
+      "summary": "Demonstration teaching must follow the host school's academic year, not WGU's rolling terms. Students who ignored this reported multi-month waits. Plan backwards from an August/September or January placement start.",
+      "impact": "high"
+    },
+    {
+      "id": "adv-one-term-goal",
+      "title": "Front-load easy courses to accelerate terms",
+      "tags": ["acceleration", "strategy", "wgu"],
+      "summary": "WGU's flat-rate terms reward acceleration. A common pattern: knock out short performance-assessment courses first for momentum, then dedicate focus blocks to harder OAs. Many report completing far more than the 12-CU minimum per term.",
+      "impact": "medium"
+    },
+    {
+      "id": "adv-mentor-relationship",
+      "title": "Use your program mentor aggressively",
+      "tags": ["wgu", "mentor"],
+      "summary": "Program mentors can approve schedule changes, unlock courses early, and re-order your degree plan. Students who ask, get. Set expectations in your first call.",
+      "impact": "medium"
+    },
+    {
+      "id": "adv-sophia-two-at-once",
+      "title": "Run two Sophia courses in parallel",
+      "tags": ["sophia", "acceleration"],
+      "summary": "Because Sophia essay (Touchstone) grading takes 1–3 days, many students keep a second course going while waiting on grades, finishing 2 courses in the time one would take.",
+      "impact": "medium"
+    },
+    {
+      "id": "adv-studycom-exam-limit",
+      "title": "Watch Study.com's monthly proctored exam limit",
+      "tags": ["studycom", "planning", "cost"],
+      "summary": "Study.com plans typically cap proctored exams per month. Students recommend finishing course content for 2 courses, then scheduling both finals in the same billing cycle to minimize months paid.",
+      "impact": "medium"
+    },
+    {
+      "id": "adv-fafsa-first",
+      "title": "File FAFSA before anything else",
+      "tags": ["financial-aid", "fafsa"],
+      "summary": "FAFSA processing and school-code updates take weeks. Filing early keeps aid from delaying your intended WGU start term, even while you're still working through Sophia.",
+      "impact": "medium"
+    },
+    {
+      "id": "adv-oa-vs-pa",
+      "title": "Know the OA vs PA rhythm",
+      "tags": ["wgu", "assessments"],
+      "summary": "Objective Assessments (proctored tests) suit crammers; Performance Assessments (papers/projects) suit writers. Education degrees are PA-heavy — students who write efficiently accelerate fastest.",
+      "impact": "low"
+    },
+    {
+      "id": "adv-virginia-licensure",
+      "title": "Check Virginia licensure requirements yourself",
+      "tags": ["licensure", "virginia"],
+      "summary": "State licensure rules (tests like Praxis/VCLA/RVE, background checks, application steps) change and vary by state. Community members strongly advise reading the Virginia DOE licensure pages directly rather than relying on summaries.",
+      "impact": "high"
+    },
+    {
+      "id": "adv-dont-buy-unverified",
+      "title": "Never buy a course on an unverified equivalency",
+      "tags": ["transfer", "cost", "caution"],
+      "summary": "The most common regret: paying for a Sophia/Study.com course based on an outdated Reddit list, then finding the agreement changed. Verify against the current official pathway PDF or an enrollment counselor before every purchase.",
+      "impact": "high"
+    }
+  ]
+}

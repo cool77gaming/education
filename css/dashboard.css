@@ -1,0 +1,90 @@
+/* ============================================================
+   EducationOS — dashboard.css
+   Progress rings, stat tiles, hero area, recommendation card.
+   ============================================================ */
+
+/* Hero row */
+.dash-hero {
+  display: grid; gap: 16px;
+  grid-template-columns: 1fr;
+  margin-bottom: 16px;
+}
+@media (min-width: 1024px) {
+  .dash-hero { grid-template-columns: 340px 1fr; align-items: stretch; }
+}
+
+/* Progress ring card */
+.ring-card {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; gap: 6px; padding: 28px 20px;
+  position: relative; overflow: hidden;
+}
+.ring-card::before {
+  content: "";
+  position: absolute; inset: -40% -40% auto auto;
+  width: 70%; aspect-ratio: 1;
+  background: radial-gradient(circle, rgba(99,102,241,.16), transparent 70%);
+  pointer-events: none;
+}
+.ring-wrap { position: relative; width: 190px; height: 190px; }
+.ring-wrap svg { transform: rotate(-90deg); }
+.ring-bg { fill: none; stroke: var(--surface-2); stroke-width: 13; }
+.ring-fg { fill: none; stroke: url(#ringGradient); stroke-width: 13; stroke-linecap: round; }
+.ring-center {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.ring-center .pct { font-size: 2.35rem; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+.ring-center .lbl { font-size: .72rem; color: var(--ink-3); font-weight: 600; text-transform: uppercase; letter-spacing: .1em; margin-top: 4px; }
+
+/* Stat tiles */
+.stat-grid { display: grid; gap: 16px; grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 640px) { .stat-grid { grid-template-columns: repeat(3, 1fr); } }
+.stat-tile { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 4px; justify-content: center; }
+.stat-tile .stat-icon {
+  width: 34px; height: 34px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, rgba(99,102,241,.16), rgba(168,85,247,.12));
+  border: 1px solid rgba(99,102,241,.22);
+  margin-bottom: 8px;
+}
+.stat-tile .stat-icon svg { width: 16px; height: 16px; color: var(--accent-1); }
+.stat-tile .stat-value { font-size: 1.55rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
+.stat-tile .stat-label { font-size: .76rem; color: var(--ink-3); font-weight: 600; }
+.stat-tile .stat-sub { font-size: .72rem; color: var(--ink-3); }
+.stat-tile .stat-sub.up { color: var(--good); font-weight: 600; }
+
+/* Recommendation card */
+.recommend-card {
+  position: relative; overflow: hidden;
+  background:
+    radial-gradient(120% 140% at 100% 0%, rgba(168,85,247,.16), transparent 55%),
+    radial-gradient(120% 140% at 0% 100%, rgba(99,102,241,.14), transparent 55%),
+    var(--surface);
+}
+.recommend-card .rec-course { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; margin: 4px 0 2px; }
+.recommend-card .rec-reason { font-size: .86rem; color: var(--ink-2); }
+.recommend-meta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+
+/* Mini progress rows (per-source progress on dashboard) */
+.mini-progress { display: grid; gap: 14px; }
+.mini-progress .mp-row { display: grid; gap: 6px; }
+.mini-progress .mp-head { display: flex; justify-content: space-between; font-size: .82rem; }
+.mini-progress .mp-head .name { font-weight: 600; }
+.mini-progress .mp-head .val { color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+/* Today's tasks */
+.task-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: .88rem; }
+.task-row:last-child { border-bottom: none; }
+.task-row.done .task-label { text-decoration: line-through; color: var(--ink-3); }
+.task-row .task-label { flex: 1; }
+
+/* Milestones */
+.milestone-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.milestone-row:last-child { border-bottom: none; }
+.milestone-row .ms-dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--accent-1); flex: none; }
+.milestone-row .ms-label { font-size: .87rem; font-weight: 600; flex: 1; }
+.milestone-row .ms-eta { font-size: .74rem; color: var(--ink-3); white-space: nowrap; }
+
+/* Section spacing */
+.dash-section { margin-top: 16px; }
