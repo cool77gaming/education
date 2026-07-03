@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Timeline · EducationOS</title>
+  <meta name="description" content="Interactive roadmap from FAFSA to Virginia licensure with estimated durations."/>
+  <meta name="theme-color" content="#0b0d12"/>
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg"/>
+  <script>try{if(localStorage.getItem("eos.theme")==='"light"'||localStorage.getItem("eos.theme")==="light")document.documentElement.classList.remove("dark")}catch(e){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>window.tailwind = window.tailwind || {}; tailwind.config = { darkMode: "class", corePlugins: { preflight: false } };</script>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/components.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+</head>
+<body data-page="timeline">
+  <a class="visually-hidden" href="#page-content">Skip to content</a>
+  <div class="app-shell">
+    <aside id="sidebar" class="sidebar" aria-label="Main navigation"></aside>
+    <div id="drawer-backdrop" class="drawer-backdrop" aria-hidden="true"></div>
+    <div class="main-wrap">
+      <header id="topbar" class="topbar"></header>
+      <main id="page-content" class="page page-enter">
+        <div class="page-header">
+          <div class="eyebrow">Roadmap</div>
+          <h1>Timeline</h1>
+          <p class="subtitle">The whole journey, FAFSA to Virginia licensure. Stages tied to a checklist item complete automatically; click a stage to jump around.</p>
+        </div>
+        <div id="timeline-content"></div>
+      </main>
+    </div>
+  </div>
+  <nav id="bottom-nav" class="bottom-nav"></nav>
+  <div id="search-overlay" class="search-overlay" aria-hidden="true"></div>
+  <div id="toast-root"></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/search.js"></script>
+  <script>
+    (function () {
+      window.EOS.pages = window.EOS.pages || {};
+      window.EOS.pages.timeline = {
+        init() {
+          const EOS = window.EOS;
+          const mount = document.getElementById("timeline-content");
+          const stages = EOS.data.settings.timeline;
+          const doneChk = new Set(EOS.store.get("checklist", []));
+
+          const doneOf = (st) => st.checklistId && doneChk.has(st.checklistId);
+          const firstOpen = stages.findIndex((st) => !doneOf(st));
+
+          mount.innerHTML = `
+            <section class="card" style="margin-bottom:22px" aria-label="Timeline progress">
+              <div style="display:flex;justify-content:space-between;font-size:.84rem;margin-bottom:8px">
+                <strong>Journey progress</strong>
+                <span style="color:var(--ink-3)">${stages.filter(doneOf).length} of ${stages.length} stages</span>
+              </div>
+              <div class="progress-track" role="progressbar"
+                   aria-valuenow="${Math.round((stages.filter(doneOf).length / stages.length) * 100)}"
+                   aria-valuemin="0" aria-valuemax="100" aria-label="Timeline progress">
+                <div class="progress-fill" data-w="${Math.round((stages.filter(doneOf).length / stages.length) * 100)}"></div>
+              </div>
+            </section>
+
+            <div class="timeline" role="list">
+              ${stages.map((st, i) => {
+                const done = doneOf(st);
+                const current = i === firstOpen;
+                return `
+                <div class="timeline-item reveal ${done ? "done" : ""} ${current ? "current" : ""}" role="listitem">
+                  <div class="timeline-rail">
+                    <div class="timeline-dot" aria-hidden="true">${done ? EOS.icons.check : i + 1}</div>
+                    ${i < stages.length - 1 ? '<div class="timeline-line"></div>' : ""}
+                  </div>
+                  <div class="card timeline-card hoverable">
+                    <div class="tl-head">
+                      <h3>${EOS.escape(st.label)}</h3>
+                      ${current ? '<span class="badge badge-accent">You are here</span>' : ""}
+                      ${done ? '<span class="badge badge-good">Done</span>' : ""}
+                      <span class="badge badge-neutral tl-duration">${EOS.icons.clock}${EOS.escape(st.duration)}</span>
+                    </div>
+                    <p style="color:var(--ink-2);font-size:.87rem;margin-top:8px">${EOS.escape(st.description)}</p>
+                    ${st.checklistId ? `<div style="margin-top:12px"><a class="btn btn-ghost" href="tracker.html">Open in checklist →</a></div>` : ""}
+                  </div>
+                </div>`;
+              }).join("")}
+            </div>`;
+
+          requestAnimationFrame(() => requestAnimationFrame(() =>
+            mount.querySelectorAll(".progress-fill[data-w]").forEach((el) => (el.style.width = el.dataset.w + "%"))));
+        },
+      };
+    })();
+  </script>
+</body>
+</html>

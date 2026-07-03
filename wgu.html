@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>WGU Degree · EducationOS</title>
+  <meta name="description" content="Every WGU Elementary Education course — assessments, difficulty, prerequisites and completion tracking."/>
+  <meta name="theme-color" content="#0b0d12"/>
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg"/>
+  <script>try{if(localStorage.getItem("eos.theme")==='"light"'||localStorage.getItem("eos.theme")==="light")document.documentElement.classList.remove("dark")}catch(e){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>window.tailwind = window.tailwind || {}; tailwind.config = { darkMode: "class", corePlugins: { preflight: false } };</script>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/components.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+</head>
+<body data-page="wgu">
+  <a class="visually-hidden" href="#page-content">Skip to content</a>
+  <div class="app-shell">
+    <aside id="sidebar" class="sidebar" aria-label="Main navigation"></aside>
+    <div id="drawer-backdrop" class="drawer-backdrop" aria-hidden="true"></div>
+    <div class="main-wrap">
+      <header id="topbar" class="topbar"></header>
+      <main id="page-content" class="page page-enter">
+        <div class="page-header">
+          <div class="eyebrow">Phase 3 · The degree itself</div>
+          <h1>WGU Degree Tracker</h1>
+          <p class="subtitle">Bachelor of Arts, Elementary Education — every course on the plan. Courses covered by a completed Sophia/Study.com transfer are marked automatically.</p>
+        </div>
+
+        <div id="wgu-banner"></div>
+
+        <section class="card" style="margin-bottom:18px" aria-label="WGU progress">
+          <div style="display:flex;justify-content:space-between;font-size:.84rem;margin-bottom:8px">
+            <strong>Degree progress (incl. planned transfers)</strong>
+            <span id="wgu-progress-label" style="color:var(--ink-3)">—</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="WGU degree completion">
+            <div class="progress-fill" id="wgu-progress-bar"></div>
+          </div>
+        </section>
+
+        <div class="toolbar">
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="search" class="input" id="wgu-list-search" placeholder="Search WGU courses…" aria-label="Search WGU courses"/>
+          </div>
+          <select class="select" id="wgu-list-sort" aria-label="Sort courses"></select>
+        </div>
+        <div class="chip-row" id="wgu-list-chips" style="margin-bottom:18px" role="group" aria-label="Filter courses"></div>
+
+        <div id="wgu-list" class="grid-cards" style="grid-template-columns:1fr"></div>
+      </main>
+    </div>
+  </div>
+  <nav id="bottom-nav" class="bottom-nav"></nav>
+  <div id="search-overlay" class="search-overlay" aria-hidden="true"></div>
+  <div id="toast-root"></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/filters.js"></script>
+  <script>
+    (function () {
+      window.EOS.pages = window.EOS.pages || {};
+      window.EOS.pages.wgu = {
+        init() {
+          const EOS = window.EOS;
+          document.getElementById("wgu-banner").innerHTML = EOS.verifyBanner("wgu", EOS.data.wgu.meta.dataNote.replace("IMPORTANT — VERIFY BEFORE ACTING: ", ""));
+
+          const cats = EOS.data.wgu.meta.categories;
+          const courseById = Object.fromEntries(EOS.data.wgu.courses.map((c) => [c.id, c]));
+          const covered = () => EOS.progress().coveredBy;
+          let coveredMap = covered();
+
+          const list = EOS.courseList({
+            mount: "wgu-list",
+            courses: EOS.data.wgu.courses,
+            storeKey: "completed.wgu",
+            searchFields: ["name", "code", "category", "notes"],
+            creditsOf: (c) => c.cus,
+            progressEl: { bar: "wgu-progress-bar", label: "wgu-progress-label" },
+            chips: [
+              { id: "all", label: "All" },
+              ...cats.map((cat) => ({ id: cat, label: cat.replace(" & Demonstration Teaching", ""), match: (c) => c.category === cat })),
+              { id: "transferable", label: "Transferable", match: (c) => c.transferable },
+              { id: "remaining", label: "Remaining", match: (c) => !EOS.store.isInList("completed.wgu", c.id) && !coveredMap[c.id] },
+            ],
+            sorts: [
+              { id: "plan", label: "Sort: Degree plan order", fn: (a, b) => cats.indexOf(a.category) - cats.indexOf(b.category) },
+              { id: "name", label: "Sort: Name A–Z", fn: (a, b) => a.name.localeCompare(b.name) },
+              { id: "difficulty", label: "Sort: Easiest first", fn: (a, b) => a.difficulty - b.difficulty },
+              { id: "cus", label: "Sort: Most CUs", fn: (a, b) => b.cus - a.cus },
+            ],
+            renderHead: (c) => {
+              coveredMap = covered();
+              const cov = coveredMap[c.id];
+              return `
+              <div class="course-name">
+                <span>${EOS.escape(c.name)}</span>
+                ${c.code ? `<span class="badge badge-neutral">${c.code}</span>` : '<span class="badge badge-warn">code: see degree plan</span>'}
+                <span class="badge ${c.assessment === "OA" ? "badge-info" : "badge-accent"}">${c.assessment === "OA" ? "Objective Assessment" : "Performance Assessment"}</span>
+                ${cov ? `<span class="badge badge-good">covered by ${cov.source === "sophia" ? "Sophia" : "Study.com"}</span>` : ""}
+              </div>
+              <div class="course-sub">
+                <span>${c.cus} CUs</span><span>${EOS.escape(c.category)}</span>
+                ${EOS.difficultyDots(c.difficulty)}
+              </div>`;
+            },
+            renderBody: (c) => {
+              const prereqs = (c.prereqs || []).map((id) => courseById[id] ? courseById[id].name : id);
+              return `
+              <div class="detail-grid">
+                <div class="detail-item"><div class="k">Assessment</div><div class="v">${c.assessment === "OA" ? "OA — proctored test" : "PA — papers/projects"}</div></div>
+                <div class="detail-item"><div class="k">Est. hours</div><div class="v">~${c.estHours} hrs</div></div>
+                <div class="detail-item"><div class="k">Competency units</div><div class="v">${c.cus}</div></div>
+                <div class="detail-item"><div class="k">Prerequisites</div><div class="v">${prereqs.length ? EOS.escape(prereqs.join(", ")) : "None"}</div></div>
+              </div>
+              ${c.resources && c.resources.length ? `<p><strong style="color:var(--ink)">Resources:</strong> ${EOS.escape(c.resources.join(" · "))}</p>` : ""}
+              <p><strong style="color:var(--ink)">Notes:</strong> ${EOS.escape(c.notes)}</p>`;
+            },
+          });
+        },
+      };
+    })();
+  </script>
+</body>
+</html>

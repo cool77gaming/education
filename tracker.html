@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Checklist · EducationOS</title>
+  <meta name="description" content="The master checklist from FAFSA to Virginia licensure — everything saves automatically."/>
+  <meta name="theme-color" content="#0b0d12"/>
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg"/>
+  <script>try{if(localStorage.getItem("eos.theme")==='"light"'||localStorage.getItem("eos.theme")==="light")document.documentElement.classList.remove("dark")}catch(e){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>window.tailwind = window.tailwind || {}; tailwind.config = { darkMode: "class", corePlugins: { preflight: false } };</script>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/components.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+</head>
+<body data-page="tracker">
+  <a class="visually-hidden" href="#page-content">Skip to content</a>
+  <div class="app-shell">
+    <aside id="sidebar" class="sidebar" aria-label="Main navigation"></aside>
+    <div id="drawer-backdrop" class="drawer-backdrop" aria-hidden="true"></div>
+    <div class="main-wrap">
+      <header id="topbar" class="topbar"></header>
+      <main id="page-content" class="page page-enter">
+        <div class="page-header">
+          <div class="eyebrow">Milestones</div>
+          <h1>Master Checklist</h1>
+          <p class="subtitle">The big rocks, in order. Checking an item updates the timeline and dashboard automatically.</p>
+        </div>
+        <div id="tracker-content"></div>
+      </main>
+    </div>
+  </div>
+  <nav id="bottom-nav" class="bottom-nav"></nav>
+  <div id="search-overlay" class="search-overlay" aria-hidden="true"></div>
+  <div id="toast-root"></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/search.js"></script>
+  <script>
+    (function () {
+      window.EOS.pages = window.EOS.pages || {};
+      window.EOS.pages.tracker = {
+        init() {
+          const EOS = window.EOS;
+          const mount = document.getElementById("tracker-content");
+          const items = EOS.data.settings.checklist;
+
+          function render() {
+            const done = new Set(EOS.store.get("checklist", []));
+            const pct = Math.round((done.size / items.length) * 100);
+            mount.innerHTML = `
+              <section class="card" style="margin-bottom:22px" aria-label="Checklist progress">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+                  <strong style="font-size:1.4rem;letter-spacing:-.02em">${pct}%</strong>
+                  <span style="color:var(--ink-3);font-size:.84rem">${done.size} of ${items.length} milestones</span>
+                </div>
+                <div class="progress-track" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Checklist progress">
+                  <div class="progress-fill good" data-w="${pct}"></div>
+                </div>
+              </section>
+
+              <div class="reveal-stagger revealed" role="list" aria-label="Milestone checklist">
+                ${items.map((it, i) => {
+                  const isDone = done.has(it.id);
+                  return `
+                    <div role="listitem">
+                      <div class="checklist-item ${isDone ? "done" : ""}" data-chk="${it.id}" tabindex="0"
+                           role="checkbox" aria-checked="${isDone}" aria-label="${EOS.escape(it.label)}">
+                        <span class="check" aria-hidden="true" ${isDone ? 'style="background:var(--accent-grad);border-color:transparent"' : ""}>${EOS.icons.check}</span>
+                        <div>
+                          <div class="cl-label">${EOS.escape(it.label)}</div>
+                          <div class="cl-hint">${EOS.escape(it.hint)}</div>
+                        </div>
+                      </div>
+                      ${i < items.length - 1 ? `<div class="checklist-connector ${isDone ? "done" : ""}"></div>` : ""}
+                    </div>`;
+                }).join("")}
+              </div>`;
+
+            // check icon visibility fix: rely on aria-checked selector
+            mount.querySelectorAll(".checklist-item").forEach((el) => {
+              const isDone = el.getAttribute("aria-checked") === "true";
+              el.querySelector(".check").setAttribute("aria-checked", isDone);
+            });
+
+            requestAnimationFrame(() => requestAnimationFrame(() =>
+              mount.querySelectorAll(".progress-fill[data-w]").forEach((el) => (el.style.width = el.dataset.w + "%"))));
+          }
+
+          function toggle(id) {
+            const nowDone = EOS.store.toggleInList("checklist", id);
+            const item = items.find((i) => i.id === id);
+            EOS.store.logActivity(`${nowDone ? "Milestone reached" : "Milestone reopened"}: ${item.label}`);
+            if (nowDone) EOS.toast(`${item.label} ✓`);
+            render();
+          }
+
+          mount.addEventListener("click", (e) => {
+            const row = e.target.closest("[data-chk]");
+            if (row) toggle(row.dataset.chk);
+          });
+          mount.addEventListener("keydown", (e) => {
+            if (e.key !== "Enter" && e.key !== " ") return;
+            const row = e.target.closest("[data-chk]");
+            if (row) { e.preventDefault(); toggle(row.dataset.chk); }
+          });
+
+          render();
+        },
+      };
+    })();
+  </script>
+</body>
+</html>

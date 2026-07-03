@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Resources · EducationOS</title>
+  <meta name="description" content="Official links, licensure resources, templates and study material for the WGU Elementary Education journey."/>
+  <meta name="theme-color" content="#0b0d12"/>
+  <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg"/>
+  <script>try{if(localStorage.getItem("eos.theme")==='"light"'||localStorage.getItem("eos.theme")==="light")document.documentElement.classList.remove("dark")}catch(e){}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>window.tailwind = window.tailwind || {}; tailwind.config = { darkMode: "class", corePlugins: { preflight: false } };</script>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/components.css"/>
+  <link rel="stylesheet" href="css/animations.css"/>
+  <link rel="stylesheet" href="css/dashboard.css"/>
+</head>
+<body data-page="resources">
+  <a class="visually-hidden" href="#page-content">Skip to content</a>
+  <div class="app-shell">
+    <aside id="sidebar" class="sidebar" aria-label="Main navigation"></aside>
+    <div id="drawer-backdrop" class="drawer-backdrop" aria-hidden="true"></div>
+    <div class="main-wrap">
+      <header id="topbar" class="topbar"></header>
+      <main id="page-content" class="page page-enter">
+        <div class="page-header">
+          <div class="eyebrow">Library</div>
+          <h1>Resources</h1>
+          <p class="subtitle">Every official link in one place. Add your own documents (transfer agreement PDF, observation forms) to the <code>assets/</code> folder and link them here.</p>
+        </div>
+        <div id="resources-content"></div>
+      </main>
+    </div>
+  </div>
+  <nav id="bottom-nav" class="bottom-nav"></nav>
+  <div id="search-overlay" class="search-overlay" aria-hidden="true"></div>
+  <div id="toast-root"></div>
+
+  <script src="js/storage.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/search.js"></script>
+  <script>
+    (function () {
+      window.EOS.pages = window.EOS.pages || {};
+      window.EOS.pages.resources = {
+        init() {
+          const EOS = window.EOS;
+          const groups = [
+            {
+              title: "Official — WGU",
+              icon: "wgu",
+              items: [
+                { title: "WGU Elementary Education (B.A.)", sub: "Program overview & current course list", href: "https://www.wgu.edu/online-teaching-degrees/elementary-education-bachelors-program.html", icon: "wgu" },
+                { title: "BAELED Program Guidebook (PDF)", sub: "The official degree plan — the source of truth", href: "https://www.wgu.edu/content/dam/wgu-65-assets/western-governors/documents/program-guides/teaching/BAELED.pdf", icon: "file" },
+                { title: "WGU Transfer Pathways", sub: "Official transfer agreements by institution & program", href: "https://partners.wgu.edu/transfer-pathways", icon: "transfer" },
+                { title: "WGU Admissions & Transcripts", sub: "Where transcripts go and how evaluation works", href: "https://www.wgu.edu/admissions/transfer-credits.html", icon: "file" },
+                { title: "WGU Financial Aid", sub: "FAFSA info, school code and aid options", href: "https://www.wgu.edu/financial-aid-tuition.html", icon: "dollar" },
+              ],
+            },
+            {
+              title: "Official — Sophia & Study.com",
+              icon: "sophia",
+              items: [
+                { title: "Sophia → WGU Teachers College pathway", sub: "Sophia's official WGU transfer page", href: "https://wguteacherscollege.sophia.org/", icon: "sophia" },
+                { title: "Sophia course catalog", sub: "All available courses & pricing", href: "https://www.sophia.org/online-courses/", icon: "sophia" },
+                { title: "Study.com for WGU", sub: "Study.com's WGU transfer information", href: "https://study.com/college/western-governors-university/index.html", icon: "studycom" },
+                { title: "Study.com college courses", sub: "Catalog & College Saver pricing", href: "https://study.com/academy/college-courses.html", icon: "studycom" },
+              ],
+            },
+            {
+              title: "Virginia Licensure",
+              icon: "award",
+              items: [
+                { title: "Virginia DOE — Teacher Licensure", sub: "Official routes, applications and requirements", href: "https://www.doe.virginia.gov/teaching-learning-assessment/teaching-in-virginia/licensure", icon: "award" },
+                { title: "Virginia licensure assessments", sub: "Required tests (Praxis / VCLA / RVE) — verify current list", href: "https://www.doe.virginia.gov/teaching-learning-assessment/teaching-in-virginia/licensure/professional-teacher-s-assessments", icon: "checklist" },
+                { title: "Praxis test information", sub: "Registration, prep and score reporting", href: "https://www.ets.org/praxis.html", icon: "file" },
+              ],
+            },
+            {
+              title: "Templates & study tools",
+              icon: "file",
+              items: [
+                { title: "Lesson plan templates", sub: "Editable templates for methods courses & student teaching", href: "https://www.canva.com/planners/templates/lesson/", icon: "file" },
+                { title: "Khan Academy", sub: "Free refreshers for math, statistics & science OAs", href: "https://www.khanacademy.org/", icon: "video" },
+                { title: "Quizlet — WGU course decks", sub: "Community flashcards for objective assessments", href: "https://quizlet.com/search?query=WGU", icon: "book" },
+                { title: "r/WGU subreddit", sub: "Course chatter, acceleration reports, transfer datapoints", href: "https://www.reddit.com/r/WGU/", icon: "reddit" },
+                { title: "DegreeForum", sub: "Deep transfer-credit knowledge base", href: "https://www.degreeforum.net/", icon: "reddit" },
+              ],
+            },
+            {
+              title: "Your documents",
+              icon: "folder",
+              items: [
+                { title: "Transfer Pathway Agreement (add yours)", sub: "Drop the PDF into assets/ and update this link — it's the source of truth for every equivalency in this app", href: "#", icon: "alert", local: true },
+                { title: "Degree plan PDF (add yours)", sub: "Your catalog-year program guide from WGU", href: "#", icon: "alert", local: true },
+                { title: "Observation / clinical forms (add yours)", sub: "Placement paperwork, background check receipts", href: "#", icon: "alert", local: true },
+              ],
+            },
+          ];
+
+          document.getElementById("resources-content").innerHTML = groups.map((g) => `
+            <section style="margin-bottom:28px" aria-label="${EOS.escape(g.title)}">
+              <h2 class="card-title" style="margin-bottom:14px">${EOS.icons[g.icon] || EOS.icons.resources}${EOS.escape(g.title)}</h2>
+              <div class="grid-cards cols-2 reveal-stagger">
+                ${g.items.map((it) => `
+                  <a class="resource-link" href="${it.href}" ${it.local ? "" : 'target="_blank" rel="noopener noreferrer"'}
+                     aria-label="${EOS.escape(it.title)}${it.local ? "" : " (opens in new tab)"}">
+                    <span class="rl-icon">${EOS.icons[it.icon] || EOS.icons.link}</span>
+                    <span>
+                      <span class="rl-title" style="display:block">${EOS.escape(it.title)}</span>
+                      <span class="rl-sub">${EOS.escape(it.sub)}</span>
+                    </span>
+                    <span class="rl-ext">${it.local ? "" : EOS.icons.external}</span>
+                  </a>`).join("")}
+              </div>
+            </section>`).join("");
+        },
+      };
+    })();
+  </script>
+</body>
+</html>
