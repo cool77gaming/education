@@ -12,212 +12,50 @@
   },
   "courses": [
     {
-      "id": "soph-eng-comp-1",
-      "name": "English Composition I",
-      "credits": 3,
-      "wguCourseId": "wgu-d270",
-      "wguEquivalent": "Composition: Successful Self-Expression (D270)",
-      "status": "pathway",
-      "difficulty": 2,
-      "estHours": 25,
-      "estDays": 7,
-      "notes": "Touchstone essay assignments graded by Sophia evaluators (allow 1–3 days per grade). Widely listed on the WGU Teachers College pathway — verify code for your catalog year.",
-      "tips": "Write the essays back-to-back and submit early; grading time is the bottleneck, not the work."
-    },
-    {
-      "id": "soph-us-history-1",
-      "name": "U.S. History I",
-      "credits": 3,
-      "wguCourseId": "wgu-c121",
-      "wguEquivalent": "Survey of United States History (C121)",
-      "status": "pathway",
-      "difficulty": 2,
-      "estHours": 20,
-      "estDays": 6,
-      "notes": "Multiple-choice challenges and milestones, no proctored final.",
-      "tips": "Keep a one-page timeline of eras as you go — the final milestone pulls from everything."
-    },
-    {
-      "id": "soph-us-government",
-      "name": "U.S. Government",
-      "credits": 3,
-      "wguCourseId": "wgu-c963",
-      "wguEquivalent": "American Politics and the US Constitution (C963)",
-      "status": "community",
-      "difficulty": 2,
-      "estHours": 20,
-      "estDays": 6,
-      "notes": "Community-reported equivalency — confirm this course appears on your official pathway before relying on it.",
-      "tips": "C963's OA at WGU is considered tough; clearing it via transfer is a popular move if your agreement allows it."
-    },
-    {
-      "id": "soph-intro-statistics",
-      "name": "Introduction to Statistics",
-      "credits": 3,
-      "wguCourseId": "wgu-c955",
-      "wguEquivalent": "Applied Probability and Statistics (C955)",
-      "status": "pathway",
-      "difficulty": 3,
-      "estHours": 30,
-      "estDays": 10,
-      "notes": "Widely listed on WGU pathways. Calculator-friendly, formula sheet provided.",
-      "tips": "Do every practice challenge twice; the milestones reuse question styles."
-    },
-    {
-      "id": "soph-college-algebra",
-      "name": "College Algebra",
-      "credits": 3,
-      "wguCourseId": null,
-      "wguEquivalent": "General math requirement — NEEDS MANUAL REVIEW",
-      "status": "review",
-      "difficulty": 3,
-      "estHours": 30,
-      "estDays": 10,
-      "notes": "BAELED's math requirements are largely program-specific (Mathematics for Elementary Educators sequence is taken at WGU). Confirm whether College Algebra applies to your plan before spending time on it.",
-      "tips": "If it doesn't map to your plan, skip it — spend the time on Statistics instead."
-    },
-    {
-      "id": "soph-ancient-greek-philosophers",
-      "name": "Ancient Greek Philosophers",
-      "credits": 3,
-      "wguCourseId": "wgu-c100",
-      "wguEquivalent": "Introduction to Humanities (C100)",
-      "status": "community",
-      "difficulty": 1,
-      "estHours": 12,
-      "estDays": 4,
-      "notes": "One of Sophia's quickest courses. Community-reported humanities match — verify.",
-      "tips": "Frequently finished in a weekend. Great confidence-builder as a first course."
-    },
-    {
-      "id": "soph-art-history-1",
-      "name": "Art History I",
-      "credits": 3,
-      "wguCourseId": "wgu-c100",
-      "wguEquivalent": "Introduction to Humanities (C100) — alternative",
-      "status": "review",
-      "difficulty": 2,
-      "estHours": 18,
-      "estDays": 6,
-      "notes": "Alternative humanities option. Only one humanities transfer will apply — don't take both this and Ancient Greek Philosophers.",
-      "tips": "Pick whichever humanities course interests her more; only one counts."
-    },
-    {
-      "id": "soph-public-speaking",
-      "name": "Public Speaking",
-      "credits": 3,
-      "wguCourseId": "wgu-d268",
-      "wguEquivalent": "Introduction to Communication (D268)",
-      "status": "review",
-      "difficulty": 3,
-      "estHours": 25,
-      "estDays": 10,
-      "notes": "NEEDS MANUAL REVIEW — requires recorded speech submissions. Confirm it maps to D268 in your agreement before starting.",
-      "tips": "Record all speeches in one session once outlines are approved."
-    },
-    {
-      "id": "soph-communication-at-work",
-      "name": "Communication at Work",
-      "credits": 3,
-      "wguCourseId": "wgu-d268",
-      "wguEquivalent": "Introduction to Communication (D268) — alternative",
-      "status": "review",
-      "difficulty": 2,
-      "estHours": 18,
-      "estDays": 6,
-      "notes": "NEEDS MANUAL REVIEW — some pathways list a different Sophia communication course. Only one communication transfer will apply.",
-      "tips": "No speeches required, making it faster than Public Speaking if it counts."
-    },
-    {
-      "id": "soph-human-biology",
-      "name": "Human Biology (+ Lab)",
-      "credits": 4,
-      "wguCourseId": "wgu-c683",
-      "wguEquivalent": "Natural Science Lab (C683)",
-      "status": "community",
-      "difficulty": 3,
-      "estHours": 35,
-      "estDays": 12,
-      "notes": "Community-reported: a Sophia lab science has satisfied the natural-science-with-lab requirement. Verify which lab course your agreement lists.",
-      "tips": "The lab component is virtual — screenshot results as you go for the write-ups."
-    },
-    {
-      "id": "soph-environmental-science",
-      "name": "Environmental Science",
-      "credits": 3,
-      "wguCourseId": null,
-      "wguEquivalent": "Science requirement — NEEDS MANUAL REVIEW",
-      "status": "review",
-      "difficulty": 2,
-      "estHours": 18,
-      "estDays": 6,
-      "notes": "Easy course, but unclear it maps to any BAELED science slot. Review before taking.",
-      "tips": "Only worth it if your evaluation confirms a slot for it."
-    },
-    {
-      "id": "soph-intro-chemistry",
-      "name": "Introduction to Chemistry",
-      "credits": 3,
-      "wguCourseId": "wgu-c165",
-      "wguEquivalent": "Integrated Physical Sciences (C165)",
-      "status": "review",
-      "difficulty": 4,
-      "estHours": 40,
-      "estDays": 14,
-      "notes": "NEEDS MANUAL REVIEW — physical science equivalencies are inconsistently reported. C165 at WGU is also considered manageable, so transfer may not be worth it.",
-      "tips": "If unverified, consider just taking C165 at WGU during term 1."
-    },
-    {
-      "id": "soph-intro-psychology",
-      "name": "Introduction to Psychology",
-      "credits": 3,
-      "wguCourseId": null,
-      "wguEquivalent": "No matching BAELED requirement found",
-      "status": "unlikely",
-      "difficulty": 1,
-      "estHours": 15,
-      "estDays": 5,
-      "notes": "UNLIKELY TO APPLY — BAELED's psychology content (D094) sits in the professional core, which generally must be completed at WGU.",
-      "tips": "Skip unless your evaluation shows an open elective slot."
-    },
-    {
-      "id": "soph-lifespan-development",
-      "name": "Lifespan Development",
-      "credits": 3,
-      "wguCourseId": null,
-      "wguEquivalent": "No matching BAELED requirement found",
-      "status": "unlikely",
-      "difficulty": 2,
-      "estHours": 18,
-      "estDays": 6,
-      "notes": "UNLIKELY TO APPLY — development content is covered by professional core courses taken at WGU.",
-      "tips": "Skip for this degree."
-    },
-    {
-      "id": "soph-eng-comp-2",
-      "name": "English Composition II",
-      "credits": 3,
-      "wguCourseId": null,
-      "wguEquivalent": "No matching BAELED requirement found",
-      "status": "unlikely",
-      "difficulty": 2,
-      "estHours": 25,
-      "estDays": 8,
-      "notes": "UNLIKELY TO APPLY — BAELED typically requires only one composition course.",
-      "tips": "Skip unless your evaluation says otherwise."
-    },
-    {
-      "id": "soph-intro-sociology",
-      "name": "Introduction to Sociology",
-      "credits": 3,
-      "wguCourseId": null,
-      "wguEquivalent": "No matching BAELED requirement found",
-      "status": "unlikely",
-      "difficulty": 1,
-      "estHours": 15,
-      "estDays": 5,
-      "notes": "UNLIKELY TO APPLY to BAELED.",
-      "tips": "Skip for this degree."
-    }
-  ]
-}
+    [
+  {
+    "id": "soph-scie-1005",
+    "wguCourseId": "wgu-integrated-physical-sciences",
+    "status": "pathway"
+  },
+  {
+    "id": "soph-scie-1020",
+    "wguCourseId": "wgu-introduction-to-biology",
+    "status": "pathway"
+  },
+  {
+    "id": "soph-scie-1021",
+    "wguCourseId": "wgu-natural-science-lab",
+    "status": "pathway"
+  },
+  {
+    "id": "soph-hist-1020",
+    "wguCourseId": "wgu-american-politics",
+    "status": "pathway"
+  },
+  {
+    "id": "soph-eng-1001",
+    "wguCourseId": "wgu-composition-writing-strategy",
+    "status": "pathway"
+  },
+  {
+    "id": "soph-comm-1002",
+    "wguCourseId": "wgu-intro-communication",
+    "status": "pathway"
+  },
+  {
+    "id": "soph-eng-1002",
+    "wguCourseId": "wgu-composition-self-expression",
+    "status": "pathway"
+  },
+  {
+    "id": "soph-math-1001",
+    "wguCourseId": "wgu-quantitative-literacy",
+    "status": "pathway"
+  },
+  {
+    "id": "soph-stat-1001",
+    "wguCourseId": "wgu-statistical-data-literacy",
+    "status": "pathway"
+  }
+]
