@@ -12,50 +12,49 @@
   },
   "courses": [
     {
-    [
-  {
-    "id": "soph-scie-1005",
-    "wguCourseId": "wgu-integrated-physical-sciences",
-    "status": "pathway"
-  },
-  {
-    "id": "soph-scie-1020",
-    "wguCourseId": "wgu-introduction-to-biology",
-    "status": "pathway"
-  },
-  {
-    "id": "soph-scie-1021",
-    "wguCourseId": "wgu-natural-science-lab",
-    "status": "pathway"
-  },
-  {
-    "id": "soph-hist-1020",
-    "wguCourseId": "wgu-american-politics",
-    "status": "pathway"
-  },
-  {
-    "id": "soph-eng-1001",
-    "wguCourseId": "wgu-composition-writing-strategy",
-    "status": "pathway"
-  },
-  {
-    "id": "soph-comm-1002",
-    "wguCourseId": "wgu-intro-communication",
-    "status": "pathway"
-  },
-  {
-    "id": "soph-eng-1002",
-    "wguCourseId": "wgu-composition-self-expression",
-    "status": "pathway"
-  },
-  {
-    "id": "soph-math-1001",
-    "wguCourseId": "wgu-quantitative-literacy",
-    "status": "pathway"
-  },
-  {
-    "id": "soph-stat-1001",
-    "wguCourseId": "wgu-statistical-data-literacy",
-    "status": "pathway"
-  }
-]
+      "id": "soph-scie-1005",
+      "wguCourseId": "wgu-integrated-physical-sciences",
+      "status": "pathway"
+    },
+    {
+      "id": "soph-scie-1020",
+      "wguCourseId": "wgu-introduction-to-biology",
+      "status": "pathway"
+    },
+    {
+      "id": "soph-scie-1021",
+      "wguCourseId": "wgu-natural-science-lab",
+      "status": "pathway"
+    },
+    {
+      "id": "soph-hist-1020",
+      "wguCourseId": "wgu-american-politics",
+      "status": "pathway"
+    },
+    {
+      "id": "soph-eng-1001",
+      "wguCourseId": "wgu-composition-writing-strategy",
+      "status": "pathway"
+    },
+    {
+      "id": "soph-comm-1002",
+      "wguCourseId": "wgu-intro-communication",
+      "status": "pathway"
+    },
+    {
+      "id": "soph-eng-1002",
+      "wguCourseId": "wgu-composition-self-expression",
+      "status": "pathway"
+    },
+    {
+      "id": "soph-math-1001",
+      "wguCourseId": "wgu-quantitative-literacy",
+      "status": "pathway"
+    },
+    {
+      "id": "soph-stat-1001",
+      "wguCourseId": "wgu-statistical-data-literacy",
+      "status": "pathway"
+    }
+  ]
+}
