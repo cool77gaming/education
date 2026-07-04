@@ -50,6 +50,7 @@
             <input type="search" class="input" id="wgu-list-search" placeholder="Search WGU courses…" aria-label="Search WGU courses"/>
           </div>
           <select class="select" id="wgu-list-sort" aria-label="Sort courses"></select>
+          <button class="btn btn-primary" id="wgu-list-add" type="button">+ Add course</button>
         </div>
         <div class="chip-row" id="wgu-list-chips" style="margin-bottom:18px" role="group" aria-label="Filter courses"></div>
 
@@ -64,6 +65,7 @@
   <script src="js/storage.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/editor.js"></script>
   <script src="js/search.js"></script>
   <script src="js/filters.js"></script>
   <script>
@@ -75,13 +77,12 @@
           document.getElementById("wgu-banner").innerHTML = EOS.verifyBanner("wgu", EOS.data.wgu.meta.dataNote.replace("IMPORTANT — VERIFY BEFORE ACTING: ", ""));
 
           const cats = EOS.data.wgu.meta.categories;
-          const courseById = Object.fromEntries(EOS.data.wgu.courses.map((c) => [c.id, c]));
+          const courseById = () => Object.fromEntries(EOS.getCourses("wgu").map((c) => [c.id, c]));
           const covered = () => EOS.progress().coveredBy;
-          let coveredMap = covered();
 
           const list = EOS.courseList({
             mount: "wgu-list",
-            courses: EOS.data.wgu.courses,
+            collection: "wgu",
             storeKey: "completed.wgu",
             searchFields: ["name", "code", "category", "notes"],
             creditsOf: (c) => c.cus,
@@ -90,7 +91,7 @@
               { id: "all", label: "All" },
               ...cats.map((cat) => ({ id: cat, label: cat.replace(" & Demonstration Teaching", ""), match: (c) => c.category === cat })),
               { id: "transferable", label: "Transferable", match: (c) => c.transferable },
-              { id: "remaining", label: "Remaining", match: (c) => !EOS.store.isInList("completed.wgu", c.id) && !coveredMap[c.id] },
+              { id: "remaining", label: "Remaining", match: (c) => !EOS.store.isInList("completed.wgu", c.id) && !covered()[c.id] },
             ],
             sorts: [
               { id: "plan", label: "Sort: Degree plan order", fn: (a, b) => cats.indexOf(a.category) - cats.indexOf(b.category) },
@@ -99,13 +100,12 @@
               { id: "cus", label: "Sort: Most CUs", fn: (a, b) => b.cus - a.cus },
             ],
             renderHead: (c) => {
-              coveredMap = covered();
-              const cov = coveredMap[c.id];
+              const cov = covered()[c.id];
               return `
               <div class="course-name">
                 <span>${EOS.escape(c.name)}</span>
                 ${c.code ? `<span class="badge badge-neutral">${c.code}</span>` : '<span class="badge badge-warn">code: see degree plan</span>'}
-                <span class="badge ${c.assessment === "OA" ? "badge-info" : "badge-accent"}">${c.assessment === "OA" ? "Objective Assessment" : "Performance Assessment"}</span>
+                <span class="badge ${c.assessment === "PA" ? "badge-accent" : "badge-warn"}">${c.assessment === "PA" ? "Performance Assessment" : "Assessment type: verify"}</span>
                 ${cov ? `<span class="badge badge-good">covered by ${cov.source === "sophia" ? "Sophia" : "Study.com"}</span>` : ""}
               </div>
               <div class="course-sub">
@@ -114,10 +114,11 @@
               </div>`;
             },
             renderBody: (c) => {
-              const prereqs = (c.prereqs || []).map((id) => courseById[id] ? courseById[id].name : id);
+              const byId = courseById();
+              const prereqs = (c.prereqs || []).map((id) => byId[id] ? byId[id].name : id);
               return `
               <div class="detail-grid">
-                <div class="detail-item"><div class="k">Assessment</div><div class="v">${c.assessment === "OA" ? "OA — proctored test" : "PA — papers/projects"}</div></div>
+                <div class="detail-item"><div class="k">Assessment</div><div class="v">${c.assessment === "PA" ? "PA — papers/projects/observation" : "Not stated in Program Guide — verify"}</div></div>
                 <div class="detail-item"><div class="k">Est. hours</div><div class="v">~${c.estHours} hrs</div></div>
                 <div class="detail-item"><div class="k">Competency units</div><div class="v">${c.cus}</div></div>
                 <div class="detail-item"><div class="k">Prerequisites</div><div class="v">${prereqs.length ? EOS.escape(prereqs.join(", ")) : "None"}</div></div>

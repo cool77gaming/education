@@ -1,8 +1,9 @@
 /* ============================================================
    EducationOS — filters.js
    Reusable course-list component with search, filter chips,
-   sorting, expandable cards, completion checkboxes and
-   per-course notes. Powers the Sophia, Study.com and WGU pages.
+   sorting, expandable cards, completion checkboxes, per-course
+   notes, and inline add/edit/delete. Powers the Sophia,
+   Study.com and WGU pages.
    ============================================================ */
 
 (function () {
@@ -11,9 +12,9 @@
 
   /**
    * config = {
-   *   mount, courses, storeKey,           // storeKey: "completed.sophia" etc.
+   *   mount, collection, storeKey,         // collection: "sophia"|"studycom"|"wgu"
    *   searchFields: ["name", ...],
-   *   chips: [{id,label,match(course)}],  // filter chips (first = All)
+   *   chips: [{id,label,match(course)}],   // filter chips (first = All)
    *   sorts: [{id,label,fn(a,b)}],
    *   renderHead(course), renderBody(course),
    *   progressEl,                          // optional {bar, label} ids
@@ -29,12 +30,13 @@
     let sortId = config.sorts[0].id;
     const openSet = new Set();
 
+    function allCourses() { return EOS.getCourses(config.collection); }
     function done(id) { return EOS.store.isInList(config.storeKey, id); }
 
     function visibleCourses() {
       const q = query.trim().toLowerCase();
       const activeChip = config.chips.find((c) => c.id === chip);
-      let list = config.courses.filter((c) => (activeChip.match ? activeChip.match(c) : true));
+      let list = allCourses().filter((c) => (activeChip.match ? activeChip.match(c) : true));
       if (q) {
         list = list.filter((c) =>
           config.searchFields.some((f) => String(c[f] ?? "").toLowerCase().includes(q)));
@@ -45,14 +47,15 @@
 
     function updateProgress() {
       if (!config.progressEl) return;
-      const doneList = config.courses.filter((c) => done(c.id));
+      const all = allCourses();
+      const doneList = all.filter((c) => done(c.id));
       const doneCr = doneList.reduce((t, c) => t + config.creditsOf(c), 0);
-      const totalCr = config.courses.reduce((t, c) => t + config.creditsOf(c), 0);
+      const totalCr = all.reduce((t, c) => t + config.creditsOf(c), 0);
       const pct = totalCr ? Math.round((doneCr / totalCr) * 100) : 0;
       const bar = document.getElementById(config.progressEl.bar);
       const label = document.getElementById(config.progressEl.label);
       if (bar) { bar.style.width = pct + "%"; bar.setAttribute("aria-valuenow", pct); }
-      if (label) label.textContent = `${doneList.length} of ${config.courses.length} courses · ${doneCr} of ${totalCr} credits · ${pct}%`;
+      if (label) label.textContent = `${doneList.length} of ${all.length} courses · ${doneCr} of ${totalCr} credits · ${pct}%`;
     }
 
     function render() {
@@ -64,6 +67,7 @@
       mount.innerHTML = list.map((c) => {
         const isDone = done(c.id);
         const isOpen = openSet.has(c.id);
+        const custom = EOS.isCustomCourse(config.collection, c.id);
         return `
         <article class="card course-card hoverable ${isDone ? "done" : ""} ${isOpen ? "open" : ""}" data-course="${c.id}">
           <div class="course-head" role="button" tabindex="0" aria-expanded="${isOpen}"
@@ -71,9 +75,14 @@
             <span class="check" role="checkbox" aria-checked="${isDone}" tabindex="0"
                   aria-label="Mark ${EOS.escape(c.name)} complete" data-check="${c.id}">${EOS.icons.check}</span>
             <div class="course-main">${config.renderHead(c)}</div>
+            ${custom ? '<span class="badge badge-accent" style="flex:none">Custom</span>' : ""}
             <span class="chevron">${EOS.icons.chevronDown}</span>
           </div>
           <div class="course-body"><div><div class="course-body-inner">
+            <div style="display:flex;gap:8px">
+              <button type="button" class="btn btn-ghost" data-edit-course="${c.id}" style="padding:5px 12px;font-size:.78rem">${EOS.icons.settings}Edit</button>
+              <button type="button" class="btn btn-ghost btn-danger" data-delete-course="${c.id}" style="padding:5px 12px;font-size:.78rem">${EOS.icons.trash}Delete</button>
+            </div>
             ${config.renderBody(c)}
             <div class="note-box">
               <label class="field-label" for="note-${c.id}">Personal notes</label>
@@ -94,10 +103,28 @@
         e.stopPropagation();
         const id = check.dataset.check;
         const nowDone = EOS.store.toggleInList(config.storeKey, id);
-        const course = config.courses.find((c) => c.id === id);
+        const course = allCourses().find((c) => c.id === id);
         EOS.store.logActivity(`${nowDone ? "Completed" : "Un-completed"}: ${course.name}`);
         if (nowDone) EOS.toast(`${course.name} marked complete`);
         render();
+        return;
+      }
+      const editBtn = e.target.closest("[data-edit-course]");
+      if (editBtn) {
+        e.stopPropagation();
+        const course = allCourses().find((c) => c.id === editBtn.dataset.editCourse);
+        EOS.openCourseEditor(config.collection, course, render);
+        return;
+      }
+      const delBtn = e.target.closest("[data-delete-course]");
+      if (delBtn) {
+        e.stopPropagation();
+        const course = allCourses().find((c) => c.id === delBtn.dataset.deleteCourse);
+        if (confirm(`Delete "${course.name}"? You can undo this in Settings → Reset course data.`)) {
+          EOS.deleteCourse(config.collection, course.id);
+          EOS.toast("Course deleted");
+          render();
+        }
         return;
       }
       const head = e.target.closest(".course-head");
@@ -154,9 +181,12 @@
       sortSel.addEventListener("change", () => { sortId = sortSel.value; render(); });
     }
 
+    const addBtn = document.getElementById(config.mount + "-add");
+    if (addBtn) addBtn.addEventListener("click", () => EOS.openCourseEditor(config.collection, null, render));
+
     // Deep-link (from global search): ?open=<courseId>
     const openParam = new URLSearchParams(location.search).get("open");
-    if (openParam && config.courses.some((c) => c.id === openParam)) {
+    if (openParam && allCourses().some((c) => c.id === openParam)) {
       openSet.add(openParam);
       render();
       setTimeout(() => {

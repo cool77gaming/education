@@ -126,18 +126,20 @@
      Progress engine
      ---------------------------------------------------------- */
   EOS.progress = function () {
-    const { wgu, sophia, studycom } = EOS.data;
+    const wguCourses = EOS.getCourses("wgu");
+    const sophiaCourses = EOS.getCourses("sophia");
+    const studycomCourses = EOS.getCourses("studycom");
     const doneSophia = new Set(EOS.store.get("completed.sophia", []));
     const doneStudy = new Set(EOS.store.get("completed.studycom", []));
     const doneWgu = new Set(EOS.store.get("completed.wgu", []));
 
     // Which WGU courses are covered by a completed transfer course?
     const coveredBy = {}; // wguCourseId -> {source, courseName}
-    sophia.courses.forEach((c) => {
+    sophiaCourses.forEach((c) => {
       if (c.wguCourseId && doneSophia.has(c.id) && !coveredBy[c.wguCourseId])
         coveredBy[c.wguCourseId] = { source: "sophia", name: c.name };
     });
-    studycom.courses.forEach((c) => {
+    studycomCourses.forEach((c) => {
       if (c.wguCourseId && doneStudy.has(c.id) && !coveredBy[c.wguCourseId])
         coveredBy[c.wguCourseId] = { source: "studycom", name: c.name };
     });
@@ -145,7 +147,7 @@
     const categories = {};
     let totalCUs = 0, doneCUs = 0, cusBySophia = 0, cusByStudy = 0, cusAtWgu = 0;
 
-    wgu.courses.forEach((c) => {
+    wguCourses.forEach((c) => {
       totalCUs += c.cus;
       const cat = (categories[c.category] = categories[c.category] || { total: 0, done: 0 });
       cat.total += c.cus;
@@ -164,13 +166,13 @@
 
     // ETA: remaining transfer-phase days + remaining WGU terms
     const s = EOS.getSettings();
-    const remSophiaDays = sophia.courses
+    const remSophiaDays = sophiaCourses
       .filter((c) => !doneSophia.has(c.id) && (c.status === "pathway" || c.status === "community"))
       .reduce((t, c) => t + (c.estDays || 0), 0);
-    const remStudyDays = studycom.courses
+    const remStudyDays = studycomCourses
       .filter((c) => !doneStudy.has(c.id) && c.recommendation === "worth")
       .reduce((t, c) => t + Math.round((c.estHours || 30) / 3), 0);
-    const remWguCUs = wgu.courses
+    const remWguCUs = wguCourses
       .filter((c) => !doneWgu.has(c.id) && !coveredBy[c.id])
       .reduce((t, c) => t + c.cus, 0);
     const pacePerTerm = s.paceCUsPerTerm || 20;
@@ -205,10 +207,12 @@
      Recommendation engine
      ---------------------------------------------------------- */
   EOS.recommend = function () {
-    const { sophia, studycom, wgu } = EOS.data;
+    const sophiaCourses = EOS.getCourses("sophia");
+    const studycomCourses = EOS.getCourses("studycom");
+    const wguCourses = EOS.getCourses("wgu");
     const p = EOS.progress();
 
-    const nextSophia = sophia.courses
+    const nextSophia = sophiaCourses
       .filter((c) => !p.doneSophia.has(c.id) && (c.status === "pathway" || c.status === "community")
         && !(c.wguCourseId && (p.coveredBy[c.wguCourseId] || p.doneWgu.has(c.wguCourseId))))
       .sort((a, b) => a.difficulty - b.difficulty || a.estHours - b.estHours)[0];
@@ -224,7 +228,7 @@
       };
     }
 
-    const nextStudy = studycom.courses
+    const nextStudy = studycomCourses
       .filter((c) => c.recommendation === "worth" && !p.doneStudy.has(c.id)
         && !(c.wguCourseId && (p.coveredBy[c.wguCourseId] || p.doneWgu.has(c.wguCourseId))))
       .sort((a, b) => a.difficulty - b.difficulty)[0];
@@ -238,7 +242,7 @@
       };
     }
 
-    const nextWgu = wgu.courses
+    const nextWgu = wguCourses
       .filter((c) => !p.doneWgu.has(c.id) && !p.coveredBy[c.id])
       .filter((c) => (c.prereqs || []).every((pr) => p.doneWgu.has(pr) || p.coveredBy[pr]))
       .sort((a, b) => a.difficulty - b.difficulty || a.cus - b.cus)[0];
@@ -277,7 +281,7 @@
 
   EOS.statusBadge = function (status) {
     const map = {
-      pathway: ["badge-good", "Pathway-listed · verify"],
+      pathway: ["badge-good", "Confirmed · official agreement"],
       community: ["badge-info", "Community-reported · verify"],
       review: ["badge-warn", "Needs manual review"],
       unlikely: ["badge-danger", "Unlikely to apply"],
