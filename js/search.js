@@ -18,13 +18,13 @@
     EOS.nav.filter((n) => n.id).forEach((n) =>
       index.push({ type: "Page", title: n.label, sub: "Open page", href: n.href, icon: n.icon }));
 
-    (EOS.data.sophia.courses || []).forEach((c) =>
+    EOS.getCourses("sophia").forEach((c) =>
       index.push({ type: "Sophia", title: c.name, sub: `${c.credits} cr → ${c.wguEquivalent}`, href: `sophia.html?open=${c.id}`, icon: "sophia", extra: c.notes }));
 
-    (EOS.data.studycom.courses || []).forEach((c) =>
+    EOS.getCourses("studycom").forEach((c) =>
       index.push({ type: "Study.com", title: c.name, sub: `${c.credits} cr → ${c.wguEquivalent}`, href: `studycom.html?open=${c.id}`, icon: "studycom", extra: c.notes }));
 
-    (EOS.data.wgu.courses || []).forEach((c) =>
+    EOS.getCourses("wgu").forEach((c) =>
       index.push({ type: "WGU", title: c.name + (c.code ? ` (${c.code})` : ""), sub: `${c.cus} CUs · ${c.category}`, href: `wgu.html?open=${c.id}`, icon: "wgu", extra: c.notes }));
 
     (EOS.data.reddit.advice || []).forEach((a) =>

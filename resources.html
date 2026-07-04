@@ -42,6 +42,8 @@
   <script src="js/storage.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/editor.js"></script>
+  <script src="js/documents.js"></script>
   <script src="js/search.js"></script>
   <script>
     (function () {
@@ -91,15 +93,6 @@
                 { title: "DegreeForum", sub: "Deep transfer-credit knowledge base", href: "https://www.degreeforum.net/", icon: "reddit" },
               ],
             },
-            {
-              title: "Your documents",
-              icon: "folder",
-              items: [
-                { title: "Transfer Pathway Agreement (add yours)", sub: "Drop the PDF into assets/ and update this link — it's the source of truth for every equivalency in this app", href: "#", icon: "alert", local: true },
-                { title: "Degree plan PDF (add yours)", sub: "Your catalog-year program guide from WGU", href: "#", icon: "alert", local: true },
-                { title: "Observation / clinical forms (add yours)", sub: "Placement paperwork, background check receipts", href: "#", icon: "alert", local: true },
-              ],
-            },
           ];
 
           document.getElementById("resources-content").innerHTML = groups.map((g) => `
@@ -117,7 +110,16 @@
                     <span class="rl-ext">${it.local ? "" : EOS.icons.external}</span>
                   </a>`).join("")}
               </div>
-            </section>`).join("");
+            </section>`).join("") + `
+            <section style="margin-bottom:28px" aria-label="Your documents">
+              <h2 class="card-title" style="margin-bottom:14px">${EOS.icons.file}Your documents</h2>
+              <p style="font-size:.85rem;color:var(--ink-2);margin-bottom:14px">
+                Upload your Transfer Pathway Agreement, degree plan, or clinical paperwork so it's always one click away — stored privately in this browser.
+              </p>
+              <div id="doc-manager"></div>
+            </section>`;
+
+          EOS.renderDocumentManager("doc-manager");
         },
       };
     })();

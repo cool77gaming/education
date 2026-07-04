@@ -42,6 +42,7 @@
   <script src="js/storage.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/editor.js"></script>
   <script src="js/search.js"></script>
   <script>
     (function () {
@@ -116,6 +117,19 @@
                   <button class="btn btn-danger" id="btn-reset">${EOS.icons.trash}Reset everything</button>
                 </div>
               </section>
+
+              <section class="card" aria-labelledby="edits-title">
+                <h2 class="card-title" id="edits-title">${EOS.icons.settings}Course data edits</h2>
+                <p style="font-size:.85rem;color:var(--ink-2);margin-bottom:16px">
+                  Use "+ Add course" or the Edit/Delete buttons on the Sophia, Study.com and WGU pages to correct or extend the built-in data —
+                  no JSON editing required. Reset any list below to go back to the original shipped data.
+                </p>
+                <div style="display:flex;gap:10px;flex-wrap:wrap" id="reset-edits-row">
+                  <button class="btn" data-reset-collection="sophia">Reset Sophia data</button>
+                  <button class="btn" data-reset-collection="studycom">Reset Study.com data</button>
+                  <button class="btn" data-reset-collection="wgu">Reset WGU data</button>
+                </div>
+              </section>
             </div>
 
             <section class="card reveal" style="margin-top:16px" aria-labelledby="about-title">
@@ -124,8 +138,9 @@
                 ${EOS.escape(EOS.data.wgu.meta.dataNote)}
               </p>
               <p style="font-size:.87rem;color:var(--ink-2);margin-top:10px">
-                To correct anything, edit the JSON files in the <code>data/</code> folder —
-                <code>wgu.json</code> (degree plan), <code>sophia.json</code>, <code>studycom.json</code> — and re-publish. The README covers this step by step.
+                To add courses, correct anything, or attach your own documents, use the "+ Add course" button and Edit/Delete actions on the
+                Sophia, Study.com and WGU pages, and the document uploader on the <a href="resources.html" style="text-decoration:underline">Resources</a> page —
+                everything is editable right from the app. (You can still hand-edit the JSON files in <code>data/</code> before publishing if you prefer; see the README.)
               </p>
             </section>`;
 
@@ -172,6 +187,16 @@
             if (confirm("Reset ALL EducationOS data in this browser? This cannot be undone (export a backup first).")) {
               EOS.store.resetAll();
               location.reload();
+            }
+          });
+
+          document.getElementById("reset-edits-row").addEventListener("click", (e) => {
+            const btn = e.target.closest("[data-reset-collection]");
+            if (!btn) return;
+            const collection = btn.dataset.resetCollection;
+            if (confirm(`Reset all custom edits to ${collection === "wgu" ? "WGU" : collection === "studycom" ? "Study.com" : "Sophia"} data? Your added/edited/deleted courses in this list will be discarded — completions and notes are kept.`)) {
+              EOS.resetCourseEdits(collection);
+              EOS.toast("Course data reset");
             }
           });
         },

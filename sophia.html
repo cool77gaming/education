@@ -50,6 +50,7 @@
             <input type="search" class="input" id="sophia-list-search" placeholder="Search Sophia courses…" aria-label="Search Sophia courses"/>
           </div>
           <select class="select" id="sophia-list-sort" aria-label="Sort courses"></select>
+          <button class="btn btn-primary" id="sophia-list-add" type="button">+ Add course</button>
         </div>
         <div class="chip-row" id="sophia-list-chips" style="margin-bottom:18px" role="group" aria-label="Filter courses"></div>
 
@@ -64,6 +65,7 @@
   <script src="js/storage.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/editor.js"></script>
   <script src="js/search.js"></script>
   <script src="js/filters.js"></script>
   <script>
@@ -78,7 +80,7 @@
 
           EOS.courseList({
             mount: "sophia-list",
-            courses: EOS.data.sophia.courses,
+            collection: "sophia",
             storeKey: "completed.sophia",
             searchFields: ["name", "wguEquivalent", "notes", "tips"],
             creditsOf: (c) => c.credits,

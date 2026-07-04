@@ -11,24 +11,51 @@ Upload it to GitHub Pages and it just works.
 
 ---
 
-## ⚠️ Important: verify the transfer data
+## Data sources
 
-This app was built without access to the official **WGU Transfer Pathway Agreement**
-and **BAELED Program Guide** PDFs (they weren't in the repository when the data was
-compiled). Course lists and equivalencies were reconstructed from publicly documented
-WGU/Sophia pathway information and community reports, and **every mapping is labeled**
-in the UI:
+The WGU and Sophia data in this app is sourced directly from official documents:
+
+- **`data/wgu.json`** — WGU Program Guidebook, *Bachelor of Arts, Elementary Education*,
+  Catalog Version 202603 (published 12/11/2025). All 37 courses / 120 competency units
+  match that guide exactly.
+- **`data/sophia.json`** — WGU × Sophia Learning Transfer Pathway Agreement for this
+  program (uniqueId BAELED7113). All 9 confirmed transfer requirements (26 of 120 CUs)
+  match that agreement exactly, including every alternative course code offered per
+  requirement.
+- **`data/studycom.json`** — No official Study.com articulation agreement exists for
+  this program. The two WGU requirements with no confirmed transfer path are flagged
+  as "needs manual review" rather than guessed.
+
+Course names, codes, and prices can change between catalog versions — if your degree
+plan differs, re-verify with your WGU enrollment counselor and update the data using
+the in-app editor described below (no JSON editing required).
 
 | Label | Meaning |
 |---|---|
-| `Pathway-listed · verify` | Widely published on the official pathway — still confirm your catalog year |
+| `Confirmed · official agreement` | Directly from the signed Transfer Pathway Agreement |
 | `Community-reported · verify` | Reported to work by students — confirm before purchasing |
 | `Needs manual review` | Conflicting or missing information — do not act without confirming |
 | `Unlikely to apply` | Probably wasted money for this degree — listed so you don't buy it |
 
-**Before purchasing any course, verify the equivalency against your official
-agreement or a WGU enrollment counselor**, then correct `data/*.json` to match
-(see [Updating transfer data](#updating-transfer-data)).
+## Editing data from the app — no JSON required
+
+Every course list (Sophia, Study.com, WGU) has a **"+ Add course"** button in the
+toolbar, and each course card has **Edit** and **Delete** buttons once expanded.
+Changes save to this browser's local storage as an overlay on top of the shipped
+data — nothing on disk changes, and search, progress, and the recommendation engine
+all pick up your edits immediately. If you want to start over, **Settings → Course
+data edits** has a one-click reset per list (Sophia / Study.com / WGU).
+
+You can still hand-edit the JSON files in `data/` before publishing if you prefer —
+see [Updating transfer data](#updating-transfer-data) below.
+
+## Attaching your own documents
+
+The **Resources** page has a **Your documents** section where you can upload files
+(your Transfer Pathway Agreement, degree plan, observation forms, etc.) directly from
+the browser — no server, no `assets/` folder editing. Files are stored as the browser's
+local storage, so keep them under ~5MB each; use **Download** or **Open** to get them
+back, and **Remove** to delete.
 
 ---
 
@@ -79,15 +106,18 @@ python3 -m http.server 8080
 
 ## Updating transfer data
 
-All content lives in `data/` — no code changes needed:
+Prefer the in-app editor (see above) for day-to-day changes. To bulk-edit or reset
+the baseline data before publishing, edit the JSON files in `data/` directly —
+no code changes needed:
 
-- **`data/wgu.json`** — the degree plan. Each course has `code`, `name`, `cus`,
-  `category`, `assessment` (`OA`/`PA`), `difficulty` (1–5), `estHours`, `prereqs`
-  (array of course ids), `transferable`, `sophiaId` / `studycomId` (the transfer
-  course that covers it), `resources`, `notes`.
+- **`data/wgu.json`** — the degree plan. Each course has `code` (usually `null` —
+  WGU's Program Guide doesn't publish codes; check MyWGU for yours), `name`, `cus`,
+  `category`, `assessment` (`PA` if the Program Guide explicitly describes a
+  performance/observation task, otherwise `Verify`), `difficulty` (1–5), `estHours`,
+  `prereqs` (array of course ids), `transferable`, `sophiaId` / `studycomId` (the
+  transfer course that covers it), `resources`, `notes`.
   The **degree total is computed from this list**, so keeping it accurate keeps
-  every chart accurate. When you get your official degree plan, correct the codes
-  (many are marked `null` — "code: see degree plan") and add/remove courses.
+  every chart accurate.
 - **`data/sophia.json`** — Sophia courses. `wguCourseId` links a course to the WGU
   requirement it satisfies; `status` is one of `pathway` / `community` / `review`
   / `unlikely` (drives the colored badges).
@@ -98,10 +128,11 @@ All content lives in `data/` — no code changes needed:
 
 ### Adding a course
 
-Add an object to the `courses` array of the relevant file with a **unique `id`**
-(e.g. `"soph-intro-ethics"`). If it transfers, set `wguCourseId` to the matching id
-in `wgu.json`. That's it — search, filters, progress and the recommendation engine
-pick it up automatically.
+Easiest: use the **"+ Add course"** button on the Sophia, Study.com, or WGU page.
+To add one in the JSON instead, add an object to the `courses` array with a
+**unique `id`** (e.g. `"soph-intro-ethics"`). If it transfers, set `wguCourseId` to
+the matching id in `wgu.json`. Either way, search, filters, progress and the
+recommendation engine pick it up automatically.
 
 ---
 
