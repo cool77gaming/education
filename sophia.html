@@ -29,7 +29,7 @@
         <div class="page-header">
           <div class="eyebrow">Phase 1 · Cheap credits first</div>
           <h1>Sophia Learning</h1>
-          <p class="subtitle">Self-paced subscription courses. Finish everything verified on the pathway <em>before</em> enrolling at WGU — completing a course here updates your degree progress automatically.</p>
+          <p class="subtitle">These 9 courses are confirmed on WGU's official Transfer Pathway Agreement for BA Elementary Education (up to 26 of 120 CUs). Finish them <em>before</em> enrolling — transfer credit stops being accepted the moment your first WGU term starts.</p>
         </div>
 
         <div id="sophia-banner"></div>
@@ -72,8 +72,9 @@
       window.EOS.pages.sophia = {
         init() {
           const EOS = window.EOS;
+          const rules = EOS.data.sophia.meta.keyRules || [];
           document.getElementById("sophia-banner").innerHTML = EOS.verifyBanner("sophia",
-            EOS.data.sophia.meta.dataNote.replace("VERIFY BEFORE PURCHASING: ", ""));
+            `This data comes directly from WGU's official Transfer Pathway Agreement (generated 7/3/2026). Key rules: ${rules.map((r) => EOS.escape(r)).join(" ")}`);
 
           EOS.courseList({
             mount: "sophia-list",
@@ -84,7 +85,7 @@
             progressEl: { bar: "sophia-progress-bar", label: "sophia-progress-label" },
             chips: [
               { id: "all", label: "All" },
-              { id: "pathway", label: "Pathway-listed", match: (c) => c.status === "pathway" },
+              { id: "pathway", label: "Confirmed", match: (c) => c.status === "pathway" },
               { id: "community", label: "Community-reported", match: (c) => c.status === "community" },
               { id: "review", label: "Needs review", match: (c) => c.status === "review" },
               { id: "unlikely", label: "Unlikely", match: (c) => c.status === "unlikely" },

@@ -277,7 +277,7 @@
 
   EOS.statusBadge = function (status) {
     const map = {
-      pathway: ["badge-good", "Pathway-listed · verify"],
+      pathway: ["badge-good", "Confirmed · official agreement"],
       community: ["badge-info", "Community-reported · verify"],
       review: ["badge-warn", "Needs manual review"],
       unlikely: ["badge-danger", "Unlikely to apply"],

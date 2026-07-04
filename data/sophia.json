@@ -1,60 +1,136 @@
 {
   "meta": {
-    "provider": "Sophia Learning",
-    "pricingNote": "Sophia is subscription based (billed monthly). Confirm current pricing at sophia.org before budgeting — the default used by the calculator is editable in Settings.",
-    "dataNote": "VERIFY BEFORE PURCHASING: The official WGU Transfer Pathway Agreement PDF was not available when this list was compiled. Statuses below are labeled 'Pathway-listed (verify)', 'Community-reported (verify)', 'Needs manual review', or 'Unlikely to apply'. Nothing here is a guarantee of transfer credit.",
+    "provider": "Sophia Learning LLC",
+    "pricingNote": "This official agreement does not include pricing. Sophia is billed as a monthly subscription — verify current pricing at sophia.org before budgeting (default used by the calculator is editable in Settings).",
+    "dataNote": "SOURCE: WGU Transfer Pathways Agreement, Sophia Learning LLC — Bachelor of Arts, Elementary Education (Catalog 03-2026), generated 7/3/2026 (uniqueId BAELED7113, official document provided by the user). Every course below is DIRECTLY from that agreement — nothing here is guessed. Several WGU requirements accept any ONE of several alternative Sophia courses; all listed alternatives are shown, but only one needs to be completed per requirement.",
+    "keyRules": [
+      "Once you start your initial term at WGU, transfer credit will no longer be accepted — complete every Sophia course you plan to use BEFORE enrolling.",
+      "A transfer course may not be used to fulfill more than one WGU requirement.",
+      "Students must complete at least 25% of the degree's 120 competency units (30 CUs) through WGU residency — transfer/prior learning combined cannot exceed 75% of the degree.",
+      "This agreement's confirmed maximum transfer is 26 of 120 CUs (about 22% of the degree) — the other 94 CUs must be completed at WGU regardless of outside coursework.",
+      "This evaluation was generated 7/3/2026 and is 'not guaranteed in perpetuity' — if enrollment is more than 30 days out, confirm with your Enrollment Counselor that policy hasn't changed."
+    ],
     "statusLegend": {
-      "pathway": "Pathway-listed (verify)",
-      "community": "Community-reported (verify)",
-      "review": "Needs manual review",
-      "unlikely": "Unlikely to apply"
+      "pathway": "Confirmed on official Transfer Pathway Agreement"
     }
   },
   "courses": [
     {
-      "id": "soph-scie-1005",
-      "wguCourseId": "wgu-integrated-physical-sciences",
-      "status": "pathway"
-    },
-    {
-      "id": "soph-scie-1020",
-      "wguCourseId": "wgu-introduction-to-biology",
-      "status": "pathway"
-    },
-    {
-      "id": "soph-scie-1021",
-      "wguCourseId": "wgu-natural-science-lab",
-      "status": "pathway"
-    },
-    {
-      "id": "soph-hist-1020",
-      "wguCourseId": "wgu-american-politics",
-      "status": "pathway"
-    },
-    {
-      "id": "soph-eng-1001",
+      "id": "soph-eng1001",
+      "name": "English Composition (ENG1001)",
+      "credits": 3,
       "wguCourseId": "wgu-composition-writing-strategy",
-      "status": "pathway"
+      "wguEquivalent": "Composition: Writing with a Strategy",
+      "status": "pathway",
+      "difficulty": 2,
+      "estHours": 25,
+      "estDays": 8,
+      "notes": "Official code: ENG1001 (SOPH-0015). Confirm the exact course title in your Sophia dashboard using this code — Sophia's public catalog names may differ slightly from the internal codes on the agreement.",
+      "tips": "Confirmed transfer — no need to verify further, just complete it before enrolling at WGU."
     },
     {
-      "id": "soph-comm-1002",
+      "id": "soph-comm-options",
+      "name": "Communication course (choose ONE: COMM1002, COMM1010, or BUSI1025)",
+      "credits": 3,
       "wguCourseId": "wgu-intro-communication",
-      "status": "pathway"
+      "wguEquivalent": "Introduction to Communication: Connecting with Others",
+      "status": "pathway",
+      "difficulty": 2,
+      "estHours": 25,
+      "estDays": 8,
+      "notes": "Official codes (any ONE satisfies this requirement): COMM1002 (SOPH-0024), COMM1010 (SOPH-0034), or BUSI1025 (SOPH-0059). Only complete one — the others would be wasted spend.",
+      "tips": "Pick whichever of the three is fastest/cheapest in your Sophia catalog; all three are pre-confirmed equivalents."
     },
     {
-      "id": "soph-eng-1002",
+      "id": "soph-eng-self-expression",
+      "name": "Composition course (choose ONE: ENG1002 or ENG1020)",
+      "credits": 3,
       "wguCourseId": "wgu-composition-self-expression",
-      "status": "pathway"
+      "wguEquivalent": "Composition: Successful Self-Expression",
+      "status": "pathway",
+      "difficulty": 2,
+      "estHours": 25,
+      "estDays": 8,
+      "notes": "Official codes (any ONE satisfies this requirement): ENG1002 (SOPH-0030) or ENG1020 (SOPH-0049). Only complete one.",
+      "tips": "Confirmed transfer for this WGU performance-assessment writing course — a strong candidate to finish early."
     },
     {
-      "id": "soph-math-1001",
+      "id": "soph-physical-science",
+      "name": "Physical science course (choose ONE: SCIE1005, CHEM1001, or SCIE1060)",
+      "credits": 3,
+      "wguCourseId": "wgu-integrated-physical-sciences",
+      "wguEquivalent": "Integrated Physical Sciences",
+      "status": "pathway",
+      "difficulty": 3,
+      "estHours": 30,
+      "estDays": 10,
+      "notes": "Official codes (any ONE satisfies this requirement): SCIE1005 (SOPH-0016), CHEM1001 (SOPH-0056), or SCIE1060 (SOPH-0095). Only complete one.",
+      "tips": "Compare the three options in your Sophia dashboard for pacing/topic fit before choosing."
+    },
+    {
+      "id": "soph-math-quant",
+      "name": "Math course (choose ONE: MATH1001, MATH1035, or MATH1040)",
+      "credits": 3,
       "wguCourseId": "wgu-quantitative-literacy",
-      "status": "pathway"
+      "wguEquivalent": "Quantitative Literacy",
+      "status": "pathway",
+      "difficulty": 3,
+      "estHours": 30,
+      "estDays": 10,
+      "notes": "Official codes (any ONE satisfies this requirement): MATH 1001 (SOPH-0001), MATH 1035 (SOPH-0069), or MATH 1040 (SOPH-0060). Only complete one.",
+      "tips": "This is separate from the Elementary Mathematics content courses, which must be completed at WGU regardless."
     },
     {
-      "id": "soph-stat-1001",
+      "id": "soph-stat1001",
+      "name": "Statistics (STAT1001)",
+      "credits": 3,
       "wguCourseId": "wgu-statistical-data-literacy",
-      "status": "pathway"
+      "wguEquivalent": "Statistical Data Literacy",
+      "status": "pathway",
+      "difficulty": 3,
+      "estHours": 30,
+      "estDays": 10,
+      "notes": "Official code: STAT1001 (SOPH-0005).",
+      "tips": "Confirmed transfer — a good candidate for early completion."
+    },
+    {
+      "id": "soph-biology",
+      "name": "Biology course (choose ONE: SCIE1020, SCIE1050, SCIE1045, or SCIE1055)",
+      "credits": 3,
+      "wguCourseId": "wgu-intro-biology",
+      "wguEquivalent": "Introduction to Biology",
+      "status": "pathway",
+      "difficulty": 3,
+      "estHours": 30,
+      "estDays": 10,
+      "notes": "Official codes (any ONE satisfies this requirement): SCIE1020 (SOPH-0002), SCIE1050 (SOPH-0073), SCIE1045 (SOPH-0074), or SCIE1055 (SOPH-0081). Only complete one.",
+      "tips": "Four alternatives gives flexibility — pick whichever fits her schedule/interest best."
+    },
+    {
+      "id": "soph-nat-sci-lab",
+      "name": "Science lab course (choose ONE: SCIE1021, SCIE1031, SCIE1051, SCIE1046, or SCIE1056)",
+      "credits": 2,
+      "wguCourseId": "wgu-natural-science-lab",
+      "wguEquivalent": "Natural Science Lab",
+      "status": "pathway",
+      "difficulty": 2,
+      "estHours": 20,
+      "estDays": 7,
+      "notes": "Official codes (any ONE satisfies this requirement): SCIE1021 (SOPH-0067), SCIE1031 (SOPH-0070), SCIE1051 (SOPH-0072), SCIE1046 (SOPH-0075), or SCIE1056 (SOPH-0082). Only complete one.",
+      "tips": "Smallest requirement on the agreement (2 CUs) — pairs well with the matching Biology or Physical Science course above."
+    },
+    {
+      "id": "soph-hist1020",
+      "name": "US History/Government (HIST1020)",
+      "credits": 3,
+      "wguCourseId": "wgu-american-politics",
+      "wguEquivalent": "American Politics and the US Constitution",
+      "status": "pathway",
+      "difficulty": 2,
+      "estHours": 25,
+      "estDays": 8,
+      "notes": "Official code: HIST1020 (SOPH-0071).",
+      "tips": "Confirmed transfer — no proctored WGU exam to worry about if completed here first."
     }
   ]
 }

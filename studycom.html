@@ -104,10 +104,12 @@
             renderHead: (c) => `
               <div class="course-name"><span>${EOS.escape(c.name)}</span>${recBadge(c.recommendation)}${EOS.statusBadge(c.status)}</div>
               <div class="course-sub">
-                <span>${c.credits} credits</span><span>→ ${EOS.escape(c.wguEquivalent)}</span>
-                ${EOS.difficultyDots(c.difficulty)}
+                ${c.credits > 0 ? `<span>${c.credits} credits</span>` : `<span>No course selected yet</span>`}<span>→ ${EOS.escape(c.wguEquivalent)}</span>
+                ${c.credits > 0 ? EOS.difficultyDots(c.difficulty) : ""}
               </div>`,
-            renderBody: (c) => `
+            renderBody: (c) => c.credits === 0 ? `
+              <p><strong style="color:var(--ink)">Status:</strong> ${EOS.escape(c.notes)}</p>
+              <p><strong style="color:var(--ink)">What to do:</strong> ${EOS.escape(c.tips)}</p>` : `
               <div class="detail-grid">
                 <div class="detail-item"><div class="k">Transfer equivalent</div><div class="v">${EOS.escape(c.wguEquivalent)}</div></div>
                 <div class="detail-item"><div class="k">Est. hours</div><div class="v">~${c.estHours} hrs</div></div>

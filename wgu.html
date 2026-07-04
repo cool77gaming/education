@@ -105,7 +105,7 @@
               <div class="course-name">
                 <span>${EOS.escape(c.name)}</span>
                 ${c.code ? `<span class="badge badge-neutral">${c.code}</span>` : '<span class="badge badge-warn">code: see degree plan</span>'}
-                <span class="badge ${c.assessment === "OA" ? "badge-info" : "badge-accent"}">${c.assessment === "OA" ? "Objective Assessment" : "Performance Assessment"}</span>
+                <span class="badge ${c.assessment === "PA" ? "badge-accent" : "badge-warn"}">${c.assessment === "PA" ? "Performance Assessment" : "Assessment type: verify"}</span>
                 ${cov ? `<span class="badge badge-good">covered by ${cov.source === "sophia" ? "Sophia" : "Study.com"}</span>` : ""}
               </div>
               <div class="course-sub">
@@ -117,7 +117,7 @@
               const prereqs = (c.prereqs || []).map((id) => courseById[id] ? courseById[id].name : id);
               return `
               <div class="detail-grid">
-                <div class="detail-item"><div class="k">Assessment</div><div class="v">${c.assessment === "OA" ? "OA — proctored test" : "PA — papers/projects"}</div></div>
+                <div class="detail-item"><div class="k">Assessment</div><div class="v">${c.assessment === "PA" ? "PA — papers/projects/observation" : "Not stated in Program Guide — verify"}</div></div>
                 <div class="detail-item"><div class="k">Est. hours</div><div class="v">~${c.estHours} hrs</div></div>
                 <div class="detail-item"><div class="k">Competency units</div><div class="v">${c.cus}</div></div>
                 <div class="detail-item"><div class="k">Prerequisites</div><div class="v">${prereqs.length ? EOS.escape(prereqs.join(", ")) : "None"}</div></div>
